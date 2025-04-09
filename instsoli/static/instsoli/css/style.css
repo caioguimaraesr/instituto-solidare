@@ -1,0 +1,125 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+
+/********************* Cores ***********************/
+:root {
+    --cor-azul-escuro: #003366;
+    --cor-azul-medio: #0055A4;
+    --cor-azul-claro: #007BFF;
+    --cor-cinza-escuro: #333333;
+    --cor-cinza-claro: #F1F3F5;
+    --cor-branco: #FFFFFF;
+}
+
+/****************** General settings ****************/
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html, body {
+    height: 100%;
+    overflow: hidden;
+    font-family: 'Poppins', sans-serif;
+    background-color: var(--cor-branco);
+}
+
+body {
+    display: grid;
+    grid-template-columns: 300px 1fr;
+    grid-template-rows: auto 1fr auto;
+    grid-template-areas: 
+    "navbar navbar"
+    "sidebar main"
+    "sidebar footer";
+    color: var(--cor-cinza-escuro);
+}
+
+/********************* Navbar ***********************/
+nav.navbar {
+    grid-area: navbar;
+    background-color: var(--cor-azul-escuro);
+    color: var(--cor-branco);
+    position: sticky;
+    top: 0;
+    width: 100%;
+    z-index: 1000;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    padding: 1.5rem 2rem;
+}
+
+.navbar-container {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+}
+
+.navbar-container img {
+    height: 48px;
+    width: auto;
+    max-width: 100%;
+    object-fit: contain;
+}
+
+/****************** Sidebar ***********************/
+aside {
+    height: calc(100vh - 50.4px);
+    top: 50.4px;
+    position: sticky;
+    align-self: start;
+    grid-area: sidebar;
+    background-color: var(--cor-azul-medio);
+    color: var(--cor-branco);
+    padding-top: 1rem;
+}
+
+.sidebar-link {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 1rem 1.5rem;
+    color: var(--cor-branco);
+    text-decoration: none;
+    transition: transform 0.3s ease;
+    margin-top: 0.5rem;
+    border-radius: 8px;
+}
+
+.sidebar-link:hover {
+    transform: translateX(5px);
+}
+
+.sidebar-link .sidebar-title {
+    transition: color 0.3s ease;
+}
+
+.sidebar-link:hover .sidebar-title {
+    color: var(--cor-azul-claro);
+}
+
+/********************* Main ***********************/
+main {
+    grid-area: main;
+    padding: 2rem;
+    overflow-y: auto;
+    height: calc(100vh - 50.4px);
+    background-color: var(--cor-branco);
+}
+
+/********************* Responsividade ***********************/
+@media(max-width: 800px){
+    body {
+        grid-template-columns: 1fr;
+    }
+
+    aside {
+        position: fixed;
+        width: 300px;
+        display: none;
+        z-index: 1000;
+    }
+
+    .show {
+        display: block;
+    }
+}
