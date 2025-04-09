@@ -1,0 +1,307 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Instituto Solidade | Login</title>
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+</head>
+<body>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', 'sans-serif';
+          }
+          
+          body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background-size: cover;
+            background: #222;
+          }
+
+        .wrapper {
+            width: 750px;
+            background: rgba(255, 255, 255, .1);
+            border: 2px solid rgba(255, 255, 255, .2);
+            box-shadow: 0 0 10px rgba(0,0,0, .2);
+            backdrop-filter: blur(50px);
+            border-radius: 10px;
+            color: #fff;
+            padding: 40px 35px 30px;
+          }
+          
+          .wrapper h1{
+            font-size: 36px;
+            text-align: center;
+            margin-bottom: 10px;
+          } 
+          .wrapper .input-box {
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+          }
+          
+          .input-box .input-field {
+            position: relative;
+            width: 48%;
+            height: 50px;
+            margin: 13px 0;
+          }
+          
+          .input-box .input-field input {
+            width: 100%;
+            height: 100%;
+            background: transparent;
+            border: 2px solid rgba(255, 255, 255, .2);
+            outline: none;
+            font-size: 16px;
+            color: #fff;
+            border-radius: 6px;
+            padding: 15px 15px 15px 40px;
+          }
+          
+          .input-box .input-field input::placeholder {
+            color: #fff;
+          }
+          
+          .input-box .input-field i {
+            position: absolute;
+            left: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 20px;
+          }
+          
+          .wrapper label {
+            display: inline-block;
+            font-size: 14.5px;
+            margin: 10px 0 23px;
+          }
+          
+          .wrapper label input {
+            accent-color: #fff;
+            margin-right: 5px;
+          }
+          
+          .wrapper .btn {
+            width: 100%;
+            height: 45px;
+            background: #fff;
+            border: none;
+            outline: none;
+            border-radius: 6px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, .1);
+            cursor: pointer;
+            font-size: 16px;
+            color: #333;
+            font-weight: 600;
+            margin-top: 10px;
+          }
+          
+          .wrapper .btn:hover {
+            background-color: #d1d1d1;
+          }
+          
+          .account p {
+            margin-top: 5px;
+            margin-bottom: 50px;
+            font-size: 14px;
+            text-align: left;
+          }
+          
+          .input-field p {
+            color: var(--color-error-dark);
+            font-size: 14px;
+          }
+          
+          a {
+            text-decoration: none;
+            color: slateblue;
+          }
+          
+          a:hover {
+            color: blueviolet;
+          }
+
+          .check-box-usuario {
+            display: flex;
+            flex-direction: column;
+            margin: 10px 0;
+            align-items: flex-end;
+          }
+          
+          .check-box-usuario label {
+            font-size: 14px;
+            cursor: pointer;
+            margin-bottom: 5px; 
+            align-self: flex-start;
+          }
+          
+          .check-box-usuario input[type="checkbox"] {
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            appearance: none;
+            width: 22px;
+            height: 22px;
+            border: 2px solid #c7c7c7;
+            border-radius: 5px;
+            background-color: transparent;
+            position: relative;
+            cursor: pointer;
+            transition: all 0.3s ease;
+          }
+          
+          .check-box-usuario input[type="checkbox"]:checked {
+            border-color: #0e80fb;
+            background-color: #0e80fb;
+          }
+          
+          .check-box-usuario input[type="checkbox"]:checked::before {
+            width: 10px;
+            height: 10px;
+            background-color: #fff;
+            border-radius: 50%;
+          }
+          
+          /************** Admin Checkbox ***********/
+          .check-box {
+            display: flex;
+            flex-direction: column;
+            margin: 10px 0;
+            align-items: flex-start;
+          }
+          
+          .check-box label {
+            font-size: 14px;
+            cursor: pointer;
+            margin-bottom: 5px; 
+            align-self: flex-start;
+          }
+          
+          .check-box input[type="checkbox"] {
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            appearance: none;
+            width: 22px;
+            height: 22px;
+            border: 2px solid #c7c7c7;
+            border-radius: 5px;
+            background-color: transparent;
+            position: relative;
+            cursor: pointer;
+            transition: all 0.3s ease;
+          }
+          
+          .check-box input[type="checkbox"]:checked {
+            border-color: #0e80fb;
+            background-color: #0e80fb;
+          }
+          
+          .check-box input[type="checkbox"]:checked::before {
+            width: 10px;
+            height: 10px;
+            background-color: #fff;
+            border-radius: 50%;
+          }
+          
+          #admin-password-field {
+            display: none;
+            width: 100%;
+            margin-top: 10px;
+          }
+          
+          .check-box input[type="checkbox"]:checked + label + #admin-password-field {
+            display: block;
+          }
+          
+          #admin-password-field input {
+            width: 100%;
+            height: 40px;
+            background: transparent;
+            border: 2px solid #c7c7c7;
+            color: #fff;
+            border-radius: 6px;
+            padding: 10px;
+            font-size: 16px;
+          }
+          
+          #admin-password-field label {
+            font-size: 16px;
+            color: #fff;
+            margin-top: 10px;
+          }
+          
+          .dashboard-h1 {
+            color: white;
+          }
+          
+    </style>
+
+    <div class="wrapper">
+        <form action="" method="POST">
+            {% csrf_token %}
+            
+            <h1>CADASTRE-SE</h1>
+            <div class="input-box">
+                <div class="input-field">
+                    <input type="text" placeholder="Nome" name="first_name" id="first_name" required>
+                    <i class='bx bxs-user-circle'></i>
+                </div>
+                <div class="input-field">
+                    <input type="text" placeholder="Sobrenome" name="last_name" id="last_name" required>
+                    <i class='bx bxs-user-circle'></i>
+                </div>
+            </div>
+
+            <div class="input-box">
+                <div class="input-field">
+                    <input type="text" placeholder="Usuário" name="username" id="username" required>
+                    <i class="bx bxs-user"></i>
+                </div>
+                <div class="input-field">
+                    <input type="email" placeholder="Email" name="email" id="email" required>
+                    <i class="bx bxs-envelope"></i>
+                </div>
+            </div>
+
+            <div class="input-box">
+                <div class="input-field">
+                    <input type="password" placeholder="Senha" name="password" id="password" required>
+                    <i class="bx bxs-lock-alt"></i>
+                </div>
+                <div class="input-field">
+                    <input type="password" placeholder="Confirmar Senha" name="confirm_password" id="confirm_password" required>
+                    <i class="bx bxs-lock-alt"></i>
+                </div>
+            </div>
+
+            <div class="input-box">
+                <div class="check-box">
+                    <input type="checkbox" name="admin" id="admin" onchange="toggleAdminPassword()">
+                    <label for="admin">Professor</label>
+                    <div id="admin-password-field" style="display: none;">
+                        <label for="admin_password">Senha do professor</label>
+                        <input type="password" name="admin_password" id="admin_password">
+                    </div>
+                </div>     
+                <div class="check-box-usuario">
+                    <input type="checkbox" name="usuario" id="usuario">
+                    <label for="usuario">Aluno</label>
+                </div>
+            </div>
+            
+            <button type="submit" class="btn">Cadastrar</button>
+            <p>Possui uma conta? <a href="{% url "usuario:login" %}">Login</a></p>
+            
+        </form>
+    </div>
+    <script src="{% static "usuario/js/scripts.js" %}"></script>
+</body>
+</html>
