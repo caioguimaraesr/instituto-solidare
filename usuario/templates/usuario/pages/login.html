@@ -6,232 +6,36 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Instituto Solidade | Login</title>
+    <link rel="stylesheet" href=" {% static "usuario/css/style.css" %}">
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
 </head>
 <body>
-    <style>
-        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+    
+    {% include "instsoli/partials/sidebar.html" %}
 
-        /********************* Cores ***********************/
-        :root {
-            --cor-azul-escuro: #003366;
-            --cor-azul-medio: #0055A4;
-            --cor-azul-claro: #007BFF;
-            --cor-cinza-escuro: #333333;
-            --cor-cinza-claro: #F1F3F5;
-            --cor-branco: #FFFFFF;
-        }
+    <main>
+        <div class="login-form">
+            <div class="wrapper-2">
+                <form action="" method="POST">
+                    <h1>Login</h1>
+                    <div class="input-box-2">
+                        <div class="input-field">
+                            <input type="text" placeholder="Email" name="username" id="username" autocomplete="off" required>
+                            <i class="bx bxs-user"></i>
+                        </div>
+                        <div class="input-field">
 
-        /********************* Reset + Base ***********************/
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        html, body {
-            height: 100%;
-            font-family: 'Poppins', sans-serif;
-            color: var(--cor-cinza-escuro);
-            position: relative;
-        }
-
-        body::before {
-            content: "";
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-image: url('image.png');
-            background-size: cover;
-            background-position: 100% center;
-            background-repeat: no-repeat;
-            z-index: -1;
-        }
-        body {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
-
-        /* NavBar */
-        .navbar-login {
-            width: 100%;
-            background-color: var(--cor-azul-escuro);
-            padding: 1rem 2rem;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-            position: absolute;
-            top: 0;
-            left: 0;
-            padding: 1.5rem 2rem;
-        }
-        
-        .navbar-container {
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-        }
-        
-        .navbar-container img {
-            height: 40px;
-            width: auto;
-            object-fit: contain;
-        }
-        
-        .navbar-title {
-            color: var(--cor-branco);
-            font-size: 20px;
-            font-weight: 500;
-        }
-
-        /******************* Login-Form **********************/
-        .login-form {
-            width: 100%;
-            max-width: 500px;
-            padding: 2rem;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
-
-        .wrapper-2 {
-            width: 100%;
-            background-color: var(--cor-cinza-claro);
-            border: 2px solid var(--cor-cinza-escuro);
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
-            border-radius: 10px;
-            padding: 40px 30px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
-
-        .wrapper-2 h1 {
-            font-size: 32px;
-            text-align: center;
-            color: var(--cor-azul-escuro);
-            margin-bottom: 20px;
-        }
-
-        .wrapper-2 .input-box-2 {
-            display: flex;
-            flex-direction: column;
-            width: 100%;
-        }
-
-        .input-box-2 .input-field {
-            position: relative;
-            width: 100%;
-            max-width: 300px;
-            height: 50px;
-            margin: 10px auto;
-            display: flex;
-        }
-
-        .input-box-2 .input-field input {
-            width: 100%;
-            height: 100%;
-            background: var(--cor-branco);
-            border: 2px solid var(--cor-azul-medio);
-            outline: none;
-            font-size: 16px;
-            color: var(--cor-cinza-escuro);
-            border-radius: 6px;
-            padding: 15px 15px 15px 40px;
-        }
-
-        .input-box-2 .input-field input::placeholder {
-            color: var(--cor-cinza-escuro);
-            text-align: left;
-        }
-
-        .input-box-2 .input-field i {
-            position: absolute;
-            left: 15px;
-            top: 50%;
-            transform: translateY(-50%);
-            font-size: 20px;
-            color: var(--cor-azul-escuro);
-        }
-
-        .wrapper-2 .btn-2 {
-            width: 100%;
-            max-width: 300px;
-            height: 45px;
-            background: var(--cor-azul-claro);
-            border: none;
-            border-radius: 6px;
-            cursor: pointer;
-            font-size: 16px;
-            color: var(--cor-branco);
-            font-weight: 600;
-            margin: 20px auto;
-            transition: background 0.3s ease;
-        }
-
-        .wrapper-2 .btn-2:hover {
-            background-color: var(--cor-azul-medio);
-        }
-
-        .wrapper-2 label {
-            font-size: 14.5px;
-            margin: 10px 0 23px;
-        }
-
-        .wrapper-2 label input {
-            accent-color: var(--cor-azul-escuro);
-            margin-right: 5px;
-        }
-
-        .wrapper-2 p {
-            margin-top: 20px;
-            text-align: center;
-            font-size: 16px;
-        }
-
-        .wrapper-2 a {
-            text-decoration: none;
-            color: var(--cor-azul-medio);
-            transition: color 0.3s ease;
-        }
-
-        .wrapper-2 a:hover {
-            color: var(--cor-azul-claro);
-        }
-    </style>
-
-    <nav class="navbar-login">
-        <div class="navbar-container">
-          <img src="Instituto Solidare.png" alt="Logo do Instituto">
-        </div>
-    </nav>
-
-    <div class="login-form">
-        <div class="wrapper-2">
-            <form action="" method="POST">
-                {% csrf_token %}
-
-                <h1>Login</h1>
-                <div class="input-box-2">
-                    <div class="input-field">
-                        <input type="text" placeholder="Usuário" name="username" id="username" required>
-                        <i class="bx bxs-user"></i>
+                            <input type="password" placeholder="Senha" name="password" id="password" autocomplete="off" required>
+                            <i class="bx bxs-lock-alt"></i>
+                        </div>
                     </div>
-                    <div class="input-field">
-                        <input type="password" placeholder="Senha" name="password" id="password" required>
-                        <i class="bx bxs-lock-alt"></i>
-                    </div>
-                </div>
-              
-              <button type="submit" class="btn-2">Login</button>
-              <p>Não possui uma conta? <a href="{% url "usuario:register" %}">Cadastre-se</a></p>
-            </form>
-        </div>
-    </div>
+                  <button type="submit" class="btn-2">Login</button>
+                  <p>Não possui uma conta? <a href="{% url "usuario:register" %}">Cadastre-se</a></p>
+                </form>
+            </div>
+        </div>    
+    </main>
+    
     <script src="{% static "usuario/js/scripts.js" %}"></script>
 </body>
 </html>

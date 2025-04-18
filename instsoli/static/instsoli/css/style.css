@@ -6,7 +6,7 @@
     --cor-azul-medio: #0055A4;
     --cor-azul-claro: #007BFF;
     --cor-cinza-escuro: #333333;
-    --cor-cinza-claro: #F1F3F5;
+    --cor-cinza-claro: #a1a2a2;
     --cor-branco: #FFFFFF;
 }
 
@@ -63,14 +63,19 @@ nav.navbar {
 
 /****************** Sidebar ***********************/
 aside {
-    height: calc(100vh - 50.4px);
-    top: 50.4px;
-    position: sticky;
-    align-self: start;
     grid-area: sidebar;
-    background-color: var(--cor-azul-medio);
-    color: var(--cor-branco);
+    background-color: var(--cor-branco);
+    color: var(--cor-cinza-escuro);
     padding-top: 1rem;
+    height: 100vh;
+    position: sticky;
+    top: 0;
+    overflow-y: auto;
+}
+
+aside img {
+    height: auto;
+    width: 280px;
 }
 
 .sidebar-link {
@@ -78,7 +83,7 @@ aside {
     align-items: center;
     gap: 12px;
     padding: 1rem 1.5rem;
-    color: var(--cor-branco);
+    color: var(--cor-cinza-escuro);
     text-decoration: none;
     transition: transform 0.3s ease;
     margin-top: 0.5rem;
@@ -103,7 +108,7 @@ main {
     padding: 2rem;
     overflow-y: auto;
     height: calc(100vh - 50.4px);
-    background-color: var(--cor-branco);
+    background-color: var(--cor-cinza-claro);
 }
 
 /********************* Responsividade ***********************/

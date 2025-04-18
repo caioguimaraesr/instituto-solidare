@@ -1,0 +1,193 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+
+/********************* Cores ***********************/
+:root {
+    --cor-azul-escuro: #003366;
+    --cor-azul-medio: #0055A4;
+    --cor-azul-claro: #007BFF;
+    --cor-cinza-escuro: #333333;
+    --cor-cinza-claro: #a1a2a2;
+    --cor-branco: #FFFFFF;
+}
+
+/****************** General settings ****************/
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html, body {
+    height: 100%;
+    overflow: hidden;
+    font-family: 'Poppins', sans-serif;
+    background-color: var(--cor-branco);
+}
+
+body {
+    display: grid;
+    grid-template-columns: 300px 1fr;
+    grid-template-rows: auto 1fr auto;
+    grid-template-areas: 
+    "navbar navbar"
+    "sidebar main"
+    "sidebar footer";
+    color: var(--cor-cinza-escuro);
+}
+
+/****************** Sidebar ***********************/
+aside {
+    grid-area: sidebar;
+    background-color: var(--cor-branco);
+    color: var(--cor-cinza-escuro);
+    padding-top: 1rem;
+    height: 100vh;
+    position: sticky;
+    top: 0;
+    overflow-y: auto;
+}
+
+aside img {
+    height: auto;
+    width: 280px;
+}
+
+.sidebar-link {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 1rem 1.5rem;
+    color: var(--cor-cinza-escuro);
+    text-decoration: none;
+    transition: transform 0.3s ease;
+    margin-top: 0.5rem;
+    border-radius: 8px;
+}
+
+.sidebar-link:hover {
+    transform: translateX(5px);
+}
+
+.sidebar-link .sidebar-title {
+    transition: color 0.3s ease;
+}
+
+.sidebar-link:hover .sidebar-title {
+    color: var(--cor-azul-claro);
+}
+
+/********************* Main ***********************/
+main {
+    grid-area: main;
+    padding: 2rem;
+    overflow-y: auto;
+    height: calc(100vh - 50.4px);
+    background-color: var(--cor-cinza-claro);
+}
+
+/******************* Login Page **********************/
+.login-form {
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: var(--cor-branco);
+    border-radius: 15px;
+}
+
+.wrapper-2 {
+    width: 100%;
+    max-width: 450px;
+    border-radius: 10px;
+    padding: 40px 30px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 0 auto;
+}
+
+.wrapper-2 h1 {
+    font-size: 32px;
+    text-align: center;
+    color: var(--cor-azul-escuro);
+    margin-bottom: 20px;
+}
+
+.input-box-2 {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+}
+
+.input-field {
+    position: relative;
+    max-width: 100%; 
+    width: 100%;
+    height: 50px;
+    margin: 10px auto;
+    display: flex;
+}
+
+.input-field input {
+    width: 100%;
+    height: 100%;
+    background: var(--cor-branco);
+    border: 2px solid var(--cor-cinza-escuro);
+    outline: none;
+    font-size: 16px;
+    color: var(--cor-cinza-escuro);
+    border-radius: 6px;
+    padding: 15px 15px 15px 40px;
+}
+
+.input-field input::placeholder {
+    color: var(--cor-cinza-escuro); 
+    text-align: left;
+}
+
+.input-field i {
+    position: absolute;
+    left: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 20px;
+    color: var(--cor-azul-escuro);
+}
+
+.btn-2 {
+    width: 100%;
+    max-width: 300px;
+    height: 45px;
+    background: var(--cor-azul-claro);
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 16px;
+    color: var(--cor-branco);
+    font-weight: 600;
+    margin: 20px auto;
+    transition: background 0.3s ease;
+}
+
+.btn-2:hover {
+    background-color: var(--cor-azul-medio);
+}
+
+.wrapper-2 p {
+    text-align: center;
+    margin-top: 20px;
+    font-size: 14px;
+    color: var(--cor-cinza-escuro);
+}
+
+.wrapper-2 p a {
+    color: var(--cor-azul-claro);
+    text-decoration: none;
+    font-weight: 500;
+    transition: color 0.3s ease;
+}
+
+.wrapper-2 p a:hover {
+    color: var(--cor-azul-medio);
+    text-decoration: underline;
+}
