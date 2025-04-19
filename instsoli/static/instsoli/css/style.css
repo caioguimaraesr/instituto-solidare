@@ -277,7 +277,107 @@ main {
     transition: 0.3s;
     text-decoration: none;
 }
+/********************** Portal do Professor *********************/
+.card {
+    background-color: #f5f5f5;
+    border-radius: 12px;
+    padding: 20px;
+    width: 220px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.08);
+    text-align: center;
+    transition: transform 0.2s ease;
+}
 
+.card:hover {
+    transform: translateY(-5px);
+}
+
+.card .icon {
+    font-size: 2.5rem;
+    color: #4A6CFA;
+    margin-bottom: 10px;
+}
+
+.card h3 {
+    font-size: 1.2rem;
+    margin: 10px 0;
+}
+
+.card p {
+    font-size: 0.9rem;
+    color: #555;
+    margin-bottom: 15px;
+}
+
+.card a {
+    text-decoration: none;
+    background-color: #4A6CFA;
+    color: white;
+    padding: 8px 15px;
+    border-radius: 8px;
+    font-size: 0.9rem;
+}
+/* turmas */
+.card {
+    background-color: #f9f9f9;
+    border-radius: 12px;
+    padding: 20px;
+    width: 260px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.06);
+    transition: transform 0.2s ease;
+}
+
+.card:hover {
+    transform: translateY(-4px);
+}
+
+.card h3 {
+    font-size: 1.3rem;
+    margin-bottom: 10px;
+    color: #2b2b2b;
+}
+
+.card p {
+    font-size: 0.95rem;
+    color: #444;
+    margin-bottom: 8px;
+}
+
+.turma-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-top: 15px;
+}
+
+.turma-actions a {
+    background-color: #4A6CFA;
+    color: white;
+    padding: 6px 12px;
+    border-radius: 6px;
+    text-align: center;
+    text-decoration: none;
+    font-size: 0.9rem;
+}
+
+.turma-actions a:hover {
+    background-color: #3a58d4;
+}
+
+.btn-criar-turma {
+    background-color: #2ecc71;
+    color: white;
+    padding: 10px 16px;
+    border-radius: 8px;
+    text-decoration: none;
+    font-size: 0.95rem;
+    font-weight: bold;
+    transition: background-color 0.2s ease;
+}
+
+.btn-criar-turma:hover {
+    background-color: #27ae60;
+}
 
 /********************* Responsividade ***********************/
 @media(max-width: 800px){
