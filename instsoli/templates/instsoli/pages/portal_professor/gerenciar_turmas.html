@@ -5,7 +5,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Instituto Solidare| Gerenciar Turmas</title>
+    <title>Instituto Solidare | Gerenciar Turmas</title>
     <link rel="stylesheet" href="{% static 'instsoli/css/style.css' %}">
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
 </head>
@@ -15,36 +15,24 @@
     <main style="padding: 20px;">
         <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px;">
             <h1 style="font-size: 2rem; font-weight: bold;">Minhas Turmas</h1>
-            <a href="#" class="btn-criar-turma">+ Criar Turma</a>
+            <a href="{% url "instsoli:criar_turma" %}" class="btn-criar-turma">+ Criar Turma</a>
         </div>
+
         <section style="display: flex; flex-wrap: wrap; gap: 20px;">
-            
-            <!-- Exemplo de turma 1 -->
+            {% for turma in turmas %}
             <div class="card">
-                <h3>Turma 1A</h3>
-                <p><strong>Disciplina:</strong> Matemática</p>
-                <p><strong>Alunos:</strong> 32</p>
+                <h3>{{ turma.nome }}</h3>
+                <p><strong>Curso:</strong> {{ turma.curso.nome }}</p>
+                <p><strong>Alunos:</strong> {{ turma.alunos.count }}</p>
                 <div class="turma-actions">
                     <a href="#">Ver Alunos</a>
                     <a href="#">Ver Atividades</a>
                     <a href="#">Adicionar Nota</a>
                 </div>
             </div>
-
-            <!-- Exemplo de turma 2 -->
-            <div class="card">
-                <h3>Turma 2B</h3>
-                <p><strong>Disciplina:</strong> Ciências</p>
-                <p><strong>Alunos:</strong> 28</p>
-                <div class="turma-actions">
-                    <a href="#">Ver Alunos</a>
-                    <a href="#">Ver Atividades</a>
-                    <a href="#">Adicionar Nota</a>
-                </div>
-            </div>
-
-            <!-- Você pode repetir mais cards conforme o banco de dados depois -->
-
+            {% empty %}
+            <p>Você ainda não possui turmas cadastradas.</p>
+            {% endfor %}
         </section>
     </main>
 
