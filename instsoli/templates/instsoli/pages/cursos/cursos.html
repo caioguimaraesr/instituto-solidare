@@ -1,0 +1,38 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Instituto Solidare | Home</title>
+    <link rel="stylesheet" href="{% static "instsoli/css/style.css" %}">
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+</head>
+<body>    
+    {% include "instsoli/partials/sidebar.html" %}
+
+    <main>
+        <div class="conteudo-principal">
+            <h1 class="titulo-curso">Conheça nossos cursos</h1>
+            <div class="cursos-container">
+                {% for curso in cursos %}
+                    <div class="curso-box">
+                        <div class="curso-imagem">
+                            {% if curso.imagem %}
+                                <img src="{{ curso.imagem.url }}" alt="{{ curso.nome }}" style="width: 100%; height: 100%; object-fit: cover; border-radius: 5px;">
+                            {% else %}
+                                <div style="width: 100%; height: 100%; background-color: #ccc; border-radius: 5px;"></div>
+                            {% endif %}
+                        </div>
+                        <p class="curso-nome">{{ curso.nome }}</p>
+                        <a href="{% url 'instsoli:detalhe_curso' curso.id %}" class="botao-saiba-mais">Saiba mais</a>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    </main>
+
+    <script src="{% static "instsoli/js/scripts.js" %}"></script>
+</body>
+</html>

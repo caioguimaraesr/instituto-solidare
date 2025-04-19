@@ -111,6 +111,174 @@ main {
     background-color: var(--cor-cinza-claro);
 }
 
+/*********** Cursos *****************/
+
+.conteudo-principal {
+    background-color: #f7f7f7;
+    border-radius: 10px;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;    
+}
+
+.titulo-curso {
+    text-align: center;
+    margin: 40px;
+    margin-bottom: 50px;
+    font-weight: bold;
+}
+
+.cursos-container {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    flex-wrap: wrap;
+}
+
+.curso-box {
+    width: 200px;
+    height: 300px;
+    background-color: #e3e3e3;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    align-items: center;
+    border-radius: 8px;
+    padding: 10px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    margin-bottom: 2rem;
+}
+
+.curso-imagem {
+    flex-grow: 1;
+    width: 100%;
+    background-color: #ccc;
+    border-radius: 5px;
+}
+
+.botao-saiba-mais {
+    margin-top: 10px;
+    background-color: #d6d6d6;
+    border: none;
+    padding: 8px 12px;
+    border-radius: 5px;
+    font-size: 14px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    text-decoration: none;
+    color: #333;
+}
+
+.botao-saiba-mais:hover {
+    background-color: #bcbcbc;
+}
+
+.curso-imagem img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 5px;
+}
+
+.curso-nome {
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--cor-cinza-escuro);
+    text-align: center;
+    margin: 3px;
+    line-height: 1.4;
+}
+
+/* Detalhes cursos */
+.detalhe-cursos-container{
+    background-color: #f7f7f7;
+    border-radius:10px;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+}
+
+.titulo-curso {
+    text-align: center;
+    font-size: 2rem;
+    font-weight: bold;
+    margin-bottom: 2rem;
+}
+
+.detalhe-curso {
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    gap: 2rem;
+    max-width: 900px;
+    margin: 0 auto;
+}
+
+.detalhe-curso img {
+    width: 300px;
+    height: auto;
+    border-radius: 10px;
+    object-fit: cover;
+    background-color: #ddd;
+}
+
+.descricao {
+    max-width: 500px;
+    font-size: 1rem;
+    line-height: 1.6;
+}
+
+.botoes {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    margin-top: 2rem;
+}
+
+.botoes a{
+    text-decoration: none;
+    font-size: 14px;
+    color: #333333;
+    background-color: #e3e3e3;
+}
+
+.botoes a:hover{
+    background-color: #333;
+    color: #e3e3e3;
+}
+
+.botao {
+    background-color: #eee;
+    border: none;
+    color: #e3e3e3;
+    background-color: var(--cor-cinza-escuro);
+    padding: 0.5rem 1rem;
+    border-radius: 20px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.botao:hover {
+    background-color: #3332;
+    color: #333333;
+}
+
+.botao a {
+    background-color: #eee;
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: 20px;
+    cursor: pointer;
+    font-size: 1rem;
+    transition: 0.3s;
+    text-decoration: none;
+}
+
+
 /********************* Responsividade ***********************/
 @media(max-width: 800px){
     body {
