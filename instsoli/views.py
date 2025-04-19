@@ -17,3 +17,9 @@ def detalhe_curso(request, id):
     return render(request, 'instsoli/pages/cursos/cursos_detalhes.html', context={
         'curso': curso
     })
+
+def portal_professor(request):
+    return render(request, 'instsoli/pages/portal_professor/portal_professor.html')
+
+def gerenciar_turmas(request):
+    return render(request, 'instsoli/pages/portal_professor/gerenciar_turmas.html')
