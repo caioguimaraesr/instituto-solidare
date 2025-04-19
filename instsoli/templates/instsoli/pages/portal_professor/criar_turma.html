@@ -1,0 +1,46 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Criar Turma</title>
+    <link rel="stylesheet" href="{% static 'instsoli/css/style.css' %}">
+</head>
+<body>
+    {% include "instsoli/partials/sidebar.html" %}
+    
+    <main style="padding: 30px; max-width: 600px; margin: auto;">
+        <h2 style="margin-bottom: 20px;">Cadastrar Nova Turma</h2>
+
+        <form method="POST">
+            {% csrf_token %}
+            
+            <label for="nome">Nome:</label><br>
+            <input type="text" name="nome" id="nome" required><br><br>
+            
+            <label for="curso">Curso:</label><br>
+            <select name="curso" id="curso" required>
+                <option value="">Selecione um curso</option>
+                {% for curso in cursos %}
+                    <option value="{{ curso.id }}">{{ curso.nome }}</option>
+                {% endfor %}
+            </select><br><br>
+
+            <label for="data_inicio">Data de Início:</label><br>
+            <input type="date" name="data_inicio" id="data_inicio" required><br><br>
+
+            <label for="data_fim">Data de Fim:</label><br>
+            <input type="date" name="data_fim" id="data_fim" required><br><br>
+
+            <label for="alunos">Alunos:</label><br>
+            <select name="alunos" id="alunos" multiple size="6">
+                {% for aluno in alunos %}
+                    <option value="{{ aluno.id }}">{{ aluno.user.get_full_name }}</option>
+                {% endfor %}
+            </select><br><br>
+
+            <button type="submit" class="btn-criar-turma">Salvar</button>
+        </form>
+    </main>
+</body>
+</html>
