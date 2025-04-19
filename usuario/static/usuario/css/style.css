@@ -109,7 +109,7 @@ main {
 .wrapper-2 h1 {
     font-size: 32px;
     text-align: center;
-    color: var(--cor-azul-escuro);
+    color: var(--cor-cinza-escuro);
     margin-bottom: 20px;
 }
 
@@ -140,6 +140,19 @@ main {
     padding: 15px 15px 15px 40px;
 }
 
+.input-end .input-field input {
+    width: 100%;
+    height: 100%;
+    background: var(--cor-branco);
+    border: 2px solid var(--cor-cinza-escuro);
+    outline: none;
+    font-size: 16px;
+    color: var(--cor-cinza-escuro);
+    border-radius: 6px;
+    padding: 10px;
+}
+
+
 .input-field input::placeholder {
     color: var(--cor-cinza-escuro); 
     text-align: left;
@@ -151,14 +164,14 @@ main {
     top: 50%;
     transform: translateY(-50%);
     font-size: 20px;
-    color: var(--cor-azul-escuro);
+    color: var(--cor-cinza-escuro);
 }
 
 .btn-2 {
     width: 100%;
     max-width: 300px;
     height: 45px;
-    background: var(--cor-azul-claro);
+    background: var(--cor-cinza-escuro);
     border: none;
     border-radius: 6px;
     cursor: pointer;
@@ -170,7 +183,7 @@ main {
 }
 
 .btn-2:hover {
-    background-color: var(--cor-azul-medio);
+    background-color: var(--cor-cinza-claro);
 }
 
 .wrapper-2 p {
@@ -181,13 +194,104 @@ main {
 }
 
 .wrapper-2 p a {
-    color: var(--cor-azul-claro);
+    color: var(--cor-cinza-escuro);
     text-decoration: none;
     font-weight: 500;
     transition: color 0.3s ease;
 }
 
 .wrapper-2 p a:hover {
-    color: var(--cor-azul-medio);
+    color: var(--cor-cinza-claro);
     text-decoration: underline;
+}
+
+.form-step .form-container h2{
+    font-size: 18px;
+}
+
+.input-box-2 .input-field select {
+    width: 100%;
+    height: 50px;
+    background: var(--cor-branco);
+    border: 2px solid var(--cor-cinza-escuro);
+    outline: none;
+    font-size: 16px;
+    color: var(--cor-cinza-escuro);
+    border-radius: 6px;
+    padding: 15px 15px 15px 15px;
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    background-image: url("data:image/svg+xml;charset=US-ASCII,%3Csvg%20width%3D'10'%20height%3D'7'%20xmlns%3D'http%3A//www.w3.org/2000/svg'%3E%3Cpath%20d%3D'M0%200l5%207%205-7z'%20fill%3D'%23333333'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 15px center;
+    background-size: 12px;
+}
+
+.form-step {
+    display: none;
+    width: 100%;
+}
+
+.form-step.active {
+    display: block;
+}
+
+/* Pagination */
+.step-indicators {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+    gap: 10px;
+}
+
+.step {
+    width: 12px;
+    height: 12px;
+    background-color: var(--cor-cinza-claro);
+    border-radius: 50%;
+    transition: background-color 0.3s ease;
+}
+
+.step.active {
+    background-color: var(--cor-azul-medio);
+}
+
+
+.pagination {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+}
+
+.prev-btn, .next-btn {
+    background: transparent;
+    border: none;
+    font-size: 30px;
+    color: var(--cor-azul-medio);
+    cursor: pointer;
+    transition: color 0.3s ease;
+}
+
+.prev-btn:hover, .next-btn:hover {
+    color: var(--cor-azul-claro);
+}
+
+/* Estilo para as bolinhas de navegação */
+.step-indicators {
+    display: flex;
+    gap: 10px;
+}
+
+.step {
+    width: 10px;
+    height: 10px;
+    background-color: var(--cor-cinza-claro);
+    border-radius: 50%;
+    transition: background-color 0.3s ease;
+}
+
+.step.active {
+    background-color: var(--cor-azul-medio);
 }

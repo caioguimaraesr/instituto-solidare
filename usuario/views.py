@@ -1,5 +1,6 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth.models import User
+from .models import InformacoesPessoais
 from django.contrib import messages
 from django.contrib.auth import logout, login, authenticate
 from django.contrib.auth.decorators import login_required
@@ -7,58 +8,86 @@ from django.contrib.auth.decorators import login_required
 # Create your views here.
 def register_view(request):
     if request.method == "GET":
-        return render(request, 'usuario/pages/register.html')
+        if 'form_data' not in request.session:
+            request.session['form_data'] = {}
+        return render(request, "usuario/pages/register.html", {'form_data': request.session['form_data']})
     
-    first_name = request.POST.get('first_name')
-    last_name = request.POST.get('last_name')
-    username = request.POST.get('username')
-    email = request.POST.get('email')
-    password = request.POST.get('password')
-    confirm_password = request.POST.get('confirm_password')
+    form_data = {
+        'username': request.POST.get("username"),
+        'email': request.POST.get("email"),
+        'first_name': request.POST.get("first_name"),
+        'last_name': request.POST.get("last_name"),
+        'cpf': request.POST.get("CPF"),
+        'telefone': request.POST.get("telefone"),
+        'data_nascimento': request.POST.get("data_nascimento"),
+        'genero': request.POST.get("genero"),
+        'cep': request.POST.get("CEP"),
+        'endereco': request.POST.get("endereco"),
+        'numero': request.POST.get("numero"),
+        'bairro': request.POST.get("bairro"),
+        'estado': request.POST.get("estado"),
+        'cidade': request.POST.get("cidade"),
+        'escolaridade': request.POST.get("escolaridade"),
+        'escola': request.POST.get("escola"),
+        'turno': request.POST.get("turno"),
+        'curso': request.POST.get("curso"),
+        'pergunta': request.POST.get("pergunta"),
+        'resposta': request.POST.get("resposta"),
+    }
+    request.session['form_data'] = form_data
     
-    admin = request.POST.get('admin')
-    usuario = request.POST.get('usuario')
-    admin_password = request.POST.get('admin_password')
-
+    # Validação das senhas
+    password = request.POST.get("password")
+    confirm_password = request.POST.get("confirm_password")
+    
     if password != confirm_password:
-        messages.error(request, 'As senhas não estão iguais.')
+        messages.error(request, "As senhas não coincidem.")
+        return render(request, "usuario/pages/register.html", {'form_data': form_data})
     
-    user = User.objects.filter(username=username)
-
-    if user:
-        messages.error(request, 'Usuário já existente.')
-        return redirect('usuario:register')
-
-    if admin:
-        if admin_password != 'senha':
-            messages.error(request, 'Senha de administrador incorreta.')
-            return redirect('usuario:register')
-
-        user = User.objects.create_superuser(
-        first_name=first_name,
-        last_name=last_name,
-        username=username,
-        email=email,
-        password=password
-    )
-        user.save()
-        messages.success(request, 'Usuário cadastrado com sucesso.')
-        return redirect('usuario:login')
+    # Validação de usuário existente
+    if User.objects.filter(username=form_data['username']).exists():
+        messages.error(request, "Este nome de usuário já está em uso.")
+        return render(request, "usuario/pages/register.html", {'form_data': form_data})
     
-    elif usuario:
+    # Validação de email existente
+    if User.objects.filter(email=form_data['email']).exists():
+        messages.error(request, "Este email já está cadastrado.")
+        return render(request, "usuario/pages/register.html", {'form_data': form_data})
+    
+    try:
         user = User.objects.create_user(
-            first_name=first_name,
-            last_name=last_name,
-            username=username,
-            email=email,
-            password=password
-        ) 
-        user.save()
-        messages.success(request, 'Usuário cadastrado com sucesso.')
-        return redirect('usuario:login')
-    
-    messages.error(request, 'Por favor, selecione um tipo de usuário.')
-    return redirect('usuario:register')
+            username=form_data['username'],
+            email=form_data['email'],
+            password=password,
+            first_name=form_data['first_name'],
+            last_name=form_data['last_name']
+        )
+
+        InformacoesPessoais.objects.create(
+            user=user,
+            cpf=form_data['cpf'],
+            telefone=form_data['telefone'],
+            data_nascimento=form_data['data_nascimento'],
+            genero=form_data['genero'],
+            cep=form_data['cep'],
+            endereco=form_data['endereco'],
+            numero=form_data['numero'],
+            bairro=form_data['bairro'],
+            estado=form_data['estado'],
+            cidade=form_data['cidade'],
+            escolaridade=form_data['escolaridade'],
+            escola=form_data['escola'],
+            turno=form_data['turno'],
+            curso=form_data['curso'],
+        )
+        
+        del request.session['form_data']
+        messages.success(request, "Cadastro realizado com sucesso!")
+        return redirect("usuario:login")
+        
+    except Exception as e:
+        messages.error(request, f"Ocorreu um erro durante o cadastro: {str(e)}")
+        return render(request, "usuario/pages/register.html", {'form_data': form_data})
 
 def login_view(request):
     if request.method == "GET":

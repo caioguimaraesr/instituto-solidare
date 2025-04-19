@@ -16,45 +16,186 @@
     <main>
         <div class="login-form">
             <div class="wrapper-2">
-                <form action="" method="POST">
-                    <h1>Cadastro</h1>
-                    <div class="input-box-2">
-                        <div class="input-field">
-                            <input type="text" placeholder="Email" name="username" id="username" autocomplete="off" required>
-                            <i class="bx bxs-user"></i>
+                <h1 id="form-title">Cadastro</h1>
+
+                <form action="{% url 'usuario:register' %}" method="POST" id="multiStepForm">
+                    {% csrf_token %}    
+                    <!-- Etapa 1 -->
+                    <div class="form-step active">
+                        <div class="input-box-2">
+                            <div class="input-field">
+                                <input type="text" placeholder="Usuário" name="username" id="username" autocomplete="off" 
+                                       value="{{ form_data.username|default:'' }}" required>
+                                <i class="bx bxs-user"></i>
+                            </div>
+                            <div class="input-field">
+                                <input type="text" placeholder="Email" name="email" id="email" autocomplete="off" 
+                                       value="{{ form_data.email|default:'' }}" required>
+                                <i class="bx bxs-user"></i>
+                            </div>
+                            <div class="input-field">
+                                <input type="password" placeholder="Senha" name="password" id="password" autocomplete="off" required>
+                                <i class="bx bxs-lock-alt"></i>
+                            </div>
+                            <div class="input-field">
+                                <input type="password" placeholder="Confirmar senha" name="confirm_password" id="confirm_password" autocomplete="off" required>
+                                <i class="bx bxs-lock-alt"></i>
+                            </div>
                         </div>
-                        <div class="input-field">
-                            <input type="password" placeholder="Senha" name="password" id="password" autocomplete="off" required>
-                            <i class="bx bxs-lock-alt"></i>
-                        </div>
-                        <div class="input-field">
-                            <input type="password" placeholder="Confirmar senha" name="password" id="password" autocomplete="off" required>
-                            <i class="bx bxs-lock-alt"></i>
-                        </div>
-                        <div class="form-step">
-                            <div class="form-container">
-                                <h2>Pergunta de Segurança</h2>
-                                <div class="form-group">
+                        <div class="form-container">
+                            <h2>Pergunta de Segurança</h2>
+                            <div class="input-box-2">
+                                <div class="input-field">
                                     <select id="pergunta" name="pergunta" required>
                                         <option value="">------ Selecione uma pergunta -------</option>
-                                        <option value="mae">Nome da mãe</option>
-                                        <option value="pet">Nome do primeiro pet</option>
-                                        <option value="cidade">Cidade onde nasceu</option>
+                                        <option value="professor" {% if form_data.pergunta == 'professor' %}selected{% endif %}>Professor</option>
+                                        <option value="aluno" {% if form_data.pergunta == 'aluno' %}selected{% endif %}>Aluno</option>
                                     </select>
                                 </div>
-                        
-                                <div class="form-group">
-                                    <label for="resposta">Resposta</label>
-                                    <input type="text" id="resposta" name="resposta" required>
+                            </div>
+                            <div class="input-field">
+                                <input type="text" placeholder="Resposta" id="resposta" name="resposta" 
+                                       value="{{ form_data.resposta|default:'' }}" required>
+                                <i class='bx bxs-message-dots'></i>
+                            </div>
+                        </div>
+                    </div>
+                
+                    <!-- Etapa 2 -->
+                    <div class="form-step">
+                        <div class="input-box-2">
+                            <div class="input-field">
+                                <input type="text" placeholder="Nome" name="first_name" id="first_name" autocomplete="off" 
+                                       value="{{ form_data.first_name|default:'' }}" required>
+                                <i class="bx bxs-user"></i>
+
+                                <input type="text" placeholder="Sobrenome" name="last_name" id="last_name" autocomplete="off" 
+                                       value="{{ form_data.last_name|default:'' }}" required>
+                                <i class="bx bxs-user"></i>
+                            </div>
+                            <div class="input-field">
+                                <input type="text" placeholder="CPF" name="CPF" id="CPF" inputmode="numeric" maxlenght="14" autocomplete="off" 
+                                       value="{{ form_data.cpf|default:'' }}" required>
+                                <i class='bx bx-align-left'></i>
+                            </div>
+                            <div class="input-field">
+                                <input type="text" placeholder="Telefone" name="telefone" id="telefone" inputmode="tel" maxlenght="14" autocomplete="off" 
+                                       value="{{ form_data.telefone|default:'' }}" required>
+                                <i class='bx bxs-phone' ></i>
+                            </div>
+                            <h4>Data de Nascimento</h4>
+                            <div class="input-field">
+                                <input type="date" placeholder="Data de Nascimento" name="data_nascimento" id="data_nascimento" autocomplete="off" 
+                                       value="{{ form_data.data_nascimento|default:'' }}" required>
+                                <i class='bx bxs-calendar' ></i>
+                            </div>
+                            <div class="input-field">
+                                <select id="genero" name="genero" required>
+                                    <option value="">Gênero</option>
+                                    <option value="masculino" {% if form_data.genero == 'masculino' %}selected{% endif %}>Masculino</option>
+                                    <option value="feminino" {% if form_data.genero == 'feminino' %}selected{% endif %}>Feminino</option>
+                                    <option value="pni" {% if form_data.genero == 'pni' %}selected{% endif %}>Prefiro não informar</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div> 
+                
+                    <!-- Etapa 3 -->  
+                    <div class="form-step">
+                        <div class="input-box-2">
+                            <div class="input-field">
+                                <input type="text" placeholder="CEP" name="CEP" id="CEP" inputmode="" maxlenght="" 
+                                       value="{{ form_data.cep|default:'' }}" required>
+                                <i class="bx bxs-user-detail"></i>
+                            </div>
+                            <div class="input-field">
+                                <input type="text" placeholder="Endereço" name="endereco" id="endereco" 
+                                       value="{{ form_data.endereco|default:'' }}" required>
+                                <i class='bx bxs-building-house' ></i>
+                            </div>
+                            <div class="input-field">
+                                <input type="text" placeholder="Número" name="numero" id="numero" 
+                                       value="{{ form_data.numero|default:'' }}" required>
+                                <i class='bx bx-home-alt'></i>
+                            </div>
+                            <div class="input-end">
+                                <div class="input-field">
+                                    <input type="text" placeholder="Bairro" name="bairro" id="bairro" 
+                                           value="{{ form_data.bairro|default:'' }}" required>
+    
+                                    <input type="text" placeholder="Estado" name="estado" id="estado" 
+                                           value="{{ form_data.estado|default:'' }}" required>
+                                    
+                                    <input type="text" placeholder="Cidade" name="cidade" id="cidade" 
+                                           value="{{ form_data.cidade|default:'' }}" required>
                                 </div>
                             </div>
                         </div>
-                        
-
-
-                        
                     </div>
-                </form>
+
+                    <!-- Etapa 4 -->
+                    <div class="form-step">
+                        <div class="input-box-2">
+                            <div class="input-field">
+                                <select id="escolaridade" name="escolaridade" required>
+                                    <option value="">---- Escolaridade ----</option>
+                                    <option value="npe" {% if form_data.escolaridade == 'npe' %}selected{% endif %}>Não possuo escolaridade</option>
+                                    <option value="fi" {% if form_data.escolaridade == 'fi' %}selected{% endif %}>Fundamental Incompleto</option>
+                                    <option value="fc" {% if form_data.escolaridade == 'fc' %}selected{% endif %}>Fundamental Completo</option>
+                                    <option value="emi" {% if form_data.escolaridade == 'emi' %}selected{% endif %}>Ensino medio Incompleto</option>
+                                    <option value="emc" {% if form_data.escolaridade == 'emc' %}selected{% endif %}>Ensino medio Completo</option>
+                                    <option value="esi" {% if form_data.escolaridade == 'esi' %}selected{% endif %}>Ensino Superior Incompleto</option>
+                                    <option value="emc" {% if form_data.escolaridade == 'emc' %}selected{% endif %}>Ensino Superior Completo</option>
+                                </select>
+                            </div>
+                            <div class="input-field">
+                                <input type="text" placeholder="Escola" name="escola" id="escola" 
+                                       value="{{ form_data.escola|default:'' }}" required>
+                                <i class='bx bxs-school'></i>
+                            </div>
+                            <div class="input-field">
+                                <select id="turno" name="turno" required>
+                                    <option value="">---- Turno ----</option>
+                                    <option value="manha" {% if form_data.turno == 'manha' %}selected{% endif %}>Manhã</option>
+                                    <option value="tarde" {% if form_data.turno == 'tarde' %}selected{% endif %}>Tarde</option>
+                                    <option value="noite" {% if form_data.turno == 'noite' %}selected{% endif %}>Noite</option>
+                                </select>
+                            </div>
+                            <div class="input-field">
+                                <select id="curso" name="curso" required>
+                                    <option value=""> ---- Curso que deseja matricular ----</option>
+                                    <option value="programacao" {% if form_data.curso == 'programacao' %}selected{% endif %}>Programação</option>
+                                    <option value="design" {% if form_data.curso == 'design' %}selected{% endif %}>Design</option>
+                                    <option value="">...</option>
+                                    <option value="">...</option>
+                                    <option value="">...</option>
+                                </select>
+                            </div>
+                        </div>
+                        <button type="submit" class="btn-2">Finalizar</button>
+                    </div>
+                
+                    <!-- Indicador de progresso -->
+                    <div class="pagination">
+                        <!-- Ícone de seta para esquerda (Voltar) -->
+                        <button type="button" class="prev-btn">
+                            <i class="bx bxs-left-arrow-circle"></i>
+                        </button>
+                    
+                        <!-- Bolinhas de navegação -->
+                        <div class="step-indicators">
+                            <span class="step"></span>
+                            <span class="step"></span>
+                            <span class="step"></span>
+                            <span class="step"></span>
+                        </div>
+                    
+                        <!-- Ícone de seta para direita (Próximo) -->
+                        <button type="button" class="next-btn">
+                            <i class="bx bxs-right-arrow-circle"></i>
+                        </button>
+                    </div>
+                </form>                
             </div>
         </div>    
     </main>
