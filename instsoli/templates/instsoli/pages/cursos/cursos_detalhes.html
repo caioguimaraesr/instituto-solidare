@@ -29,7 +29,7 @@
             </section>
         
             <div class="botoes">
-                <button class="botao">Inscreva-se</button>
+                <a href="{% url "usuario:login" %}" class="botao">Inscreva-se</a>
                 {% if curso.documento %}
                     <a href="{{ curso.documento.url }}" download class="botao">Grade Curricular</a>
                 {% endif %}
