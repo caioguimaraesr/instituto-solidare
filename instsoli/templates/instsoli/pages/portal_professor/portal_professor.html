@@ -1,0 +1,64 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portal do Professor | Instituto Solidare</title>
+    <link rel="stylesheet" href="{% static 'instsoli/css/style.css' %}">
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+</head>
+<body>
+    {% include "instsoli/partials/sidebar.html" %}
+
+    <main style="padding: 20px;">
+        <h1 style="font-size: 2rem; font-weight: bold; margin-bottom: 30px;">Portal do Professor</h1>
+        <section style="display: flex; flex-wrap: wrap; gap: 20px;">
+            
+            <!-- Card 1 -->
+            <div class="card">
+                <i class='bx bxs-chalkboard icon'></i>
+                <h3>Turmas Atribuídas</h3>
+                <p>Visualize suas turmas e alunos matriculados.</p>
+                <a href="{% url "instsoli:gerenciar_turmas" %}">Acessar</a>
+            </div>
+
+            <!-- Card 2 -->
+            <div class="card">
+                <i class='bx bxs-book-content icon'></i>
+                <h3>Gerenciar Notas</h3>
+                <p>Lance e edite as notas dos alunos.</p>
+                <a href="#">Acessar</a>
+            </div>
+
+            <!-- Card 3 -->
+            <div class="card">
+                <i class='bx bx-pencil icon'></i>
+                <h3>Criar Atividades</h3>
+                <p>Monte e distribua atividades para as turmas.</p>
+                <a href="#">Acessar</a>
+            </div>
+
+            <!-- Card 4 -->
+            <div class="card">
+                <i class='bx bx-message icon'></i>
+                <h3>Mensagens</h3>
+                <p>Veja mensagens recebidas dos alunos.</p>
+                <a href="#">Acessar</a>
+            </div>
+
+            <!-- Card 5 -->
+            <div class="card">
+                <i class='bx bxs-calendar icon'></i>
+                <h3>Agenda de Aulas</h3>
+                <p>Confira o calendário das suas aulas.</p>
+                <a href="#">Acessar</a>
+            </div>
+
+        </section>
+    </main>
+
+    <script src="{% static 'instsoli/js/scripts.js' %}"></script>
+</body>
+</html>
