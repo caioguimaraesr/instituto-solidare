@@ -55,12 +55,13 @@
                             </div>
                             <div class="input-field">
                                 <input type="text" placeholder="Resposta" id="resposta" name="resposta" 
-                                       value="{{ form_data.resposta|default:'' }}" required>
+                                       value="{{ form_data.resposta|default:'' }}">
                                 <i class='bx bxs-message-dots'></i>
                             </div>
                         </div>
+                        <button type="submit" id="submit-professor" class="btn-2" style="display: none;">Finalizar</button>
                     </div>
-                
+
                     <!-- Etapa 2 -->
                     <div class="form-step">
                         <div class="input-box-2">
@@ -163,12 +164,12 @@
                             </div>
                             <div class="input-field">
                                 <select id="curso" name="curso" required>
-                                    <option value=""> ---- Curso que deseja matricular ----</option>
-                                    <option value="programacao" {% if form_data.curso == 'programacao' %}selected{% endif %}>Programação</option>
-                                    <option value="design" {% if form_data.curso == 'design' %}selected{% endif %}>Design</option>
-                                    <option value="">...</option>
-                                    <option value="">...</option>
-                                    <option value="">...</option>
+                                    <option value="">---- Selecione o curso ----</option>
+                                    {% for curso in cursos %}
+                                        <option value="{{ curso.id }}" {% if form_data.curso == curso.id|stringformat:"s" %}selected{% endif %}>
+                                            {{ curso.nome }}
+                                        </option>
+                                    {% endfor %}
                                 </select>
                             </div>
                         </div>
@@ -199,7 +200,7 @@
             </div>
         </div>    
     </main>
-    
     <script src="{% static "usuario/js/scripts.js" %}"></script>
 </body>
 </html>
+
