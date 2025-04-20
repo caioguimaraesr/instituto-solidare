@@ -1,9 +1,7 @@
 from django.db import models
-
-# Create your models here.
-from django.db import models
 from django.contrib.auth.models import User
 
+# Create your models here.
 class InformacoesPessoais(models.Model):
     PERGUNTA_CHOICES = [
         ('professor', 'Professor'),
@@ -31,12 +29,6 @@ class InformacoesPessoais(models.Model):
         ('tarde', 'Tarde'),
         ('noite', 'Noite'),
     ]
-    
-    CURSO_CHOICES = [
-        ('programacao', 'Programação'),
-        ('design', 'Design'),
-        ('outro', 'Outro'),
-    ]
 
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     cpf = models.CharField(max_length=14)
@@ -52,7 +44,7 @@ class InformacoesPessoais(models.Model):
     escolaridade = models.CharField(max_length=100, choices=ESCOLARIDADE_CHOICES)
     escola = models.CharField(max_length=100)
     turno = models.CharField(max_length=50, choices=TURNO_CHOICES)
-    curso = models.CharField(max_length=100)
+    curso = models.ForeignKey("instsoli.Curso", on_delete=models.CASCADE)
 
     def __str__(self):
         return f'Informações de {self.user.username}'
