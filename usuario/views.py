@@ -1,17 +1,29 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth.models import User
 from .models import InformacoesPessoais
+from instsoli.models import Curso
 from django.contrib import messages
 from django.contrib.auth import logout, login, authenticate
 from django.contrib.auth.decorators import login_required
 
 # Create your views here.
+from django.shortcuts import render, redirect, get_object_or_404
+from django.contrib.auth.models import User
+from .models import InformacoesPessoais
+from instsoli.models import Curso
+from django.contrib import messages
+from django.contrib.auth import logout, login, authenticate
+from django.contrib.auth.decorators import login_required
+
 def register_view(request):
     if request.method == "GET":
         if 'form_data' not in request.session:
             request.session['form_data'] = {}
-        return render(request, "usuario/pages/register.html", {'form_data': request.session['form_data']})
-    
+        return render(request, "usuario/pages/register.html", context={
+            'form_data': request.session['form_data'],
+            'cursos': Curso.objects.all()
+        })
+
     form_data = {
         'username': request.POST.get("username"),
         'email': request.POST.get("email"),
@@ -30,64 +42,104 @@ def register_view(request):
         'escolaridade': request.POST.get("escolaridade"),
         'escola': request.POST.get("escola"),
         'turno': request.POST.get("turno"),
-        'curso': request.POST.get("curso"),
         'pergunta': request.POST.get("pergunta"),
         'resposta': request.POST.get("resposta"),
+        'curso': request.POST.get("curso"),
     }
     request.session['form_data'] = form_data
-    
-    # Validação das senhas
+
     password = request.POST.get("password")
     confirm_password = request.POST.get("confirm_password")
-    
+
     if password != confirm_password:
         messages.error(request, "As senhas não coincidem.")
-        return render(request, "usuario/pages/register.html", {'form_data': form_data})
-    
-    # Validação de usuário existente
+        return render(request, "usuario/pages/register.html", {
+            'form_data': form_data,
+            'cursos': Curso.objects.all()
+        })
+
     if User.objects.filter(username=form_data['username']).exists():
         messages.error(request, "Este nome de usuário já está em uso.")
-        return render(request, "usuario/pages/register.html", {'form_data': form_data})
-    
-    # Validação de email existente
+        return render(request, "usuario/pages/register.html", {
+            'form_data': form_data,
+            'cursos': Curso.objects.all()
+        })
+
     if User.objects.filter(email=form_data['email']).exists():
         messages.error(request, "Este email já está cadastrado.")
-        return render(request, "usuario/pages/register.html", {'form_data': form_data})
-    
-    try:
-        user = User.objects.create_user(
-            username=form_data['username'],
-            email=form_data['email'],
-            password=password,
-            first_name=form_data['first_name'],
-            last_name=form_data['last_name']
-        )
+        return render(request, "usuario/pages/register.html", {
+            'form_data': form_data,
+            'cursos': Curso.objects.all()
+        })
 
-        InformacoesPessoais.objects.create(
-            user=user,
-            cpf=form_data['cpf'],
-            telefone=form_data['telefone'],
-            data_nascimento=form_data['data_nascimento'],
-            genero=form_data['genero'],
-            cep=form_data['cep'],
-            endereco=form_data['endereco'],
-            numero=form_data['numero'],
-            bairro=form_data['bairro'],
-            estado=form_data['estado'],
-            cidade=form_data['cidade'],
-            escolaridade=form_data['escolaridade'],
-            escola=form_data['escola'],
-            turno=form_data['turno'],
-            curso=form_data['curso'],
-        )
-        
-        del request.session['form_data']
-        messages.success(request, "Cadastro realizado com sucesso!")
-        return redirect("usuario:login")
-        
+    try:
+        if form_data['pergunta'] == 'professor':
+            if form_data['resposta'].strip().lower() == 'instituto-solidare':
+                user = User.objects.create_superuser(
+                    username=form_data['username'],
+                    email=form_data['email'],
+                    password=password,
+                )
+                messages.success(request, "Professor cadastrado com sucesso!")
+                del request.session['form_data']
+                return redirect("usuario:login")
+            else:
+                messages.error(request, "Resposta de segurança incorreta para cadastro de professor.")
+                return render(request, "usuario/pages/register.html", {
+                    'form_data': form_data,
+                    'cursos': Curso.objects.all()
+                })
+        else:
+            user = User.objects.create_user(
+                first_name=form_data['first_name'],
+                last_name=form_data['last_name'],
+                username=form_data['username'],
+                email=form_data['email'],
+                password=password,
+            )
+
+            obrigatorios = ['cpf', 'telefone', 'data_nascimento', 'genero', 'cep', 'endereco',
+                            'numero', 'bairro', 'estado', 'cidade', 'escolaridade', 'escola', 'turno', 'curso']
+
+            for campo in obrigatorios:
+                if not form_data.get(campo):
+                    messages.error(request, f"O campo {campo} é obrigatório.")
+                    return render(request, "usuario/pages/register.html", {
+                        'form_data': form_data,
+                        'cursos': Curso.objects.all()
+                    })
+
+            curso_id = form_data.get('curso')
+            curso = get_object_or_404(Curso, id=curso_id)
+
+            InformacoesPessoais.objects.create(
+                user=user,
+                cpf=form_data['cpf'],
+                telefone=form_data['telefone'],
+                data_nascimento=form_data['data_nascimento'],
+                genero=form_data['genero'],
+                cep=form_data['cep'],
+                endereco=form_data['endereco'],
+                numero=form_data['numero'],
+                bairro=form_data['bairro'],
+                estado=form_data['estado'],
+                cidade=form_data['cidade'],
+                escolaridade=form_data['escolaridade'],
+                escola=form_data['escola'],
+                turno=form_data['turno'],
+                curso=curso,
+            )
+
+            messages.success(request, "Aluno cadastrado com sucesso!")
+            del request.session['form_data']
+            return redirect("usuario:login")
+
     except Exception as e:
         messages.error(request, f"Ocorreu um erro durante o cadastro: {str(e)}")
-        return render(request, "usuario/pages/register.html", {'form_data': form_data})
+        return render(request, "usuario/pages/register.html", context={
+            'form_data': form_data,
+            'cursos': Curso.objects.all()
+        })
 
 def login_view(request):
     if request.method == "GET":
