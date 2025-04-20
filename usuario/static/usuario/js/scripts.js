@@ -76,3 +76,53 @@ telefoneInput.addEventListener("input", function () {
 
     this.value = value;
 });
+
+// Portal do Professor
+document.addEventListener('DOMContentLoaded', function () {
+    const perguntaSelect = document.getElementById('pergunta');
+    const pagination = document.querySelector('.pagination');
+    const submitProfessor = document.getElementById('submit-professor');
+
+    function verificarPergunta() {
+        if (perguntaSelect.value === 'professor') {
+            pagination.style.display = 'none';
+            submitProfessor.style.display = 'block'; 
+        } else {
+            pagination.style.display = 'flex'; 
+            submitProfessor.style.display = 'none'; 
+        }
+    }
+
+    verificarPergunta();
+
+    perguntaSelect.addEventListener('change', verificarPergunta);
+});
+
+document.addEventListener("DOMContentLoaded", function () {
+    const selectPergunta = document.getElementById("pergunta");
+
+    selectPergunta.addEventListener("change", function () {
+        const isProfessor = selectPergunta.value === "professor";
+
+        const etapasExtras = document.querySelectorAll(
+            '.form-step:nth-of-type(2) input, .form-step:nth-of-type(2) select, ' +
+            '.form-step:nth-of-type(3) input, .form-step:nth-of-type(3) select, ' +
+            '.form-step:nth-of-type(4) input, .form-step:nth-of-type(4) select'
+        );
+
+        etapasExtras.forEach((campo) => {
+            if (isProfessor) {
+                campo.removeAttribute("required");
+            } else {
+                campo.setAttribute("required", "required");
+            }
+        });
+
+        const botaoSubmitProfessor = document.getElementById("submit-professor");
+        if (isProfessor) {
+            botaoSubmitProfessor.style.display = "block";
+        } else {
+            botaoSubmitProfessor.style.display = "none";
+        }
+    });
+});
