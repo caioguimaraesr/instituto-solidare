@@ -20,20 +20,23 @@
 
         <section style="display: flex; flex-wrap: wrap; gap: 20px;">
             {% for turma in turmas %}
-            <div class="card">
+            <div class="gerenciar_turmas-card">
+                <a href="{% url 'instsoli:excluir_turma' turma.id %}" class="btn-excluir" onclick="return confirm('Tem certeza que deseja excluir esta turma?')">
+                    <i class='bx bx-x'></i>
+                </a>
                 <h3>{{ turma.nome }}</h3>
                 <p><strong>Curso:</strong> {{ turma.curso.nome }}</p>
                 <p><strong>Alunos:</strong> {{ turma.alunos.count }}</p>
                 <div class="turma-actions">
                     <a href="#">Ver Alunos</a>
-                    <a href="#">Ver Atividades</a>
-                    <a href="#">Adicionar Nota</a>
+                    <a href="{% url "instsoli:editar_turma" turma.id %}">Editar turma</a>
                 </div>
             </div>
             {% empty %}
             <p>Você ainda não possui turmas cadastradas.</p>
             {% endfor %}
         </section>
+
     </main>
 
     <script src="{% static 'instsoli/js/scripts.js' %}"></script>
