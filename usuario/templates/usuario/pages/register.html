@@ -43,18 +43,18 @@
                             </div>
                         </div>
                         <div class="form-container">
-                            <h2>Pergunta de Segurança</h2>
+                            <h2>Eu sou...</h2>
                             <div class="input-box-2">
                                 <div class="input-field">
                                     <select id="pergunta" name="pergunta" required>
-                                        <option value="">------ Selecione uma pergunta -------</option>
-                                        <option value="professor" {% if form_data.pergunta == 'professor' %}selected{% endif %}>Professor</option>
+                                        <option value="">------ Selecione uma opção -------</option>
+                                        <option value="professor" {% if form_data.pergunta == 'professor' %}selected{% endif %}>Gestor</option>
                                         <option value="aluno" {% if form_data.pergunta == 'aluno' %}selected{% endif %}>Aluno</option>
                                     </select>
                                 </div>
                             </div>
                             <div class="input-field">
-                                <input type="text" placeholder="Resposta" id="resposta" name="resposta" 
+                                <input type="password" placeholder="Codigo de Segurança" id="cod_seguranca" name="cod_seguranca" 
                                        value="{{ form_data.resposta|default:'' }}">
                                 <i class='bx bxs-message-dots'></i>
                             </div>

@@ -43,7 +43,7 @@ def register_view(request):
         'escola': request.POST.get("escola"),
         'turno': request.POST.get("turno"),
         'pergunta': request.POST.get("pergunta"),
-        'resposta': request.POST.get("resposta"),
+        'cod_seguranca': request.POST.get("cod_seguranca"),
         'curso': request.POST.get("curso"),
     }
     request.session['form_data'] = form_data
@@ -74,7 +74,7 @@ def register_view(request):
 
     try:
         if form_data['pergunta'] == 'professor':
-            if form_data['resposta'].strip().lower() == 'instituto-solidare':
+            if form_data['cod_seguranca'].strip().lower() == 'instituto-solidare':
                 user = User.objects.create_superuser(
                     username=form_data['username'],
                     email=form_data['email'],
