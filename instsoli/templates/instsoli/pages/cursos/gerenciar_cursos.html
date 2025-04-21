@@ -1,0 +1,38 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Instituto Solidare | Home</title>
+    <link rel="stylesheet" href="{% static "instsoli/css/style.css" %}">
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+</head>
+<body>    
+    {% include "instsoli/partials/sidebar.html" %}
+
+    <main>
+        <div class="gerenciar_cursos-container">
+            <h1 style="display:flex; justify-content:center; align-items:center;">Gerenciar Cursos</h1>
+            <div class="details-cursos">
+                {% for curso in cursos %}
+                <div class="curso-item">
+                    <h3>{{ curso.nome }}</h3>
+                    <div class="curso-acoes">
+                        <a href="{% url "instsoli:editar_curso" curso.id %}" class="icone-editar" title="Editar">
+                            <i class='bx bxs-pencil'></i>
+                        </a>
+                        <a href="{% url 'instsoli:excluir_curso' curso.id %}" class="icone-deletar" title="Excluir" onclick="return confirm('Tem certeza que deseja excluir este curso?')">
+                            <i class='bx bxs-trash-alt'></i>
+                        </a>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </main>
+
+    <script src="{% static "instsoli/js/scripts.js" %}"></script>
+</body>
+</html>
