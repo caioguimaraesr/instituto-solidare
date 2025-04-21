@@ -42,6 +42,19 @@ Bem-vindo ao repositório do projeto feito por alunos no 2º período da CESAR S
     </a>
   </p>
 
+  <p style="text-align: center; text-decoration: none;">
+    <a href="https://miro.com/app/board/uXjVI_qNn9w=/?share_link_id=843219160909" 
+    style="text-decoration: none;">
+      <span>Diagrama de atividades</span>
+    </a>
+  </p>
+
+  <p style="text-align: center; text-decoration: none;">
+    <a href="https://docs.google.com/document/d/1dDLGIUTO0JjhBM0MEkPi2VQC7cnx2jSQo9t2jBP55z8/edit?usp=sharing" style="text-decoration: none;">
+      <span>Relatório Programação em Par</span>
+    </a>
+  </p>
+
   
 </details>
 <br>
