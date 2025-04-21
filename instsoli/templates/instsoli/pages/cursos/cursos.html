@@ -15,6 +15,12 @@
     <main>
         <div class="conteudo-principal">
             <h1 class="titulo-curso">Conheça nossos cursos</h1>
+            {% if user.is_superuser %}
+                <div class="botoes-cursos">
+                    <a href="{% url "instsoli:criar_curso" %}" class="btn-criar-curso">+ Criar Curso</a>
+                    <a href="{% url "instsoli:gerenciar_cursos" %}" class="btn-criar-curso">Gerenciar Cursos</a>
+                </div>
+            {% endif %}
             <div class="cursos-container">
                 {% for curso in cursos %}
                     <div class="curso-box">
