@@ -1,0 +1,43 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Editar Curso</title>
+    <link rel="stylesheet" href="{% static 'instsoli/css/style.css' %}">
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+</head>
+<body>
+    {% include "instsoli/partials/sidebar.html" %}
+    
+    <main>
+        <div class="container-criar_turma">
+            <h2 style="margin-bottom: 20px;">Editar curso</h2>
+
+            <form method="POST" enctype="multipart/form-data">
+                {% csrf_token %}
+                
+                <label for="nome">Nome:</label>
+                <input type="text" name="nome" id="nome" value="{{ curso.nome }}" required>
+                
+                <label for="desc">Descrição:</label>
+                <input type="text" name="desc" id="desc" value="{{ curso.descricao }}" required>
+                
+                <label for="imagem">Imagem:</label>
+                {% if curso.imagem %}
+                    <p>Imagem atual: <a href="{{ curso.imagem.url }}" target="_blank">Ver imagem</a></p>
+                {% endif %}
+                <input type="file" name="imagem" id="imagem" accept="image/*">
+
+                <label for="grade">Grade curricular (PDF):</label>
+                {% if curso.grade %}
+                    <p>Grade atual: <a href="{{ curso.grade.url }}" target="_blank">Ver grade</a></p>
+                {% endif %}
+                <input type="file" name="grade" id="grade" accept=".pdf">
+
+                <button type="submit" class="botao_criar-turma">Salvar alterações</button>
+            </form>
+        </div>
+    </main>
+</body>
+</html>
