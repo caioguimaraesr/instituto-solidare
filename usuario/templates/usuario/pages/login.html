@@ -20,6 +20,7 @@
                     {% csrf_token %}
                     
                     <h1>Login</h1>
+                    {% include "usuario/partials/messages.html" %}
                     <div class="input-box-2">
                         <div class="input-field">
                             <input type="text" placeholder="Usuário" name="username" id="username" autocomplete="off" required>

@@ -86,7 +86,8 @@ aside {
 
 aside img {
     height: auto;
-    width: 280px;
+    width: 100px;
+    margin-left: 90px;
 }
 
 .sidebar-link {

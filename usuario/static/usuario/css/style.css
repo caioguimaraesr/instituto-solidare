@@ -8,6 +8,17 @@
     --cor-cinza-escuro: #333333;
     --cor-cinza-claro: #a1a2a2;
     --cor-branco: #FFFFFF;
+
+    /* Messages colors */
+    --color-alert-light: #fff3cd;
+    --color-warning-light: #fff3cd;
+    --color-error-light: #f8d7da;
+    --color-info-dark: #4d86c4;
+    --color-debug-dark: #4d86c4;
+    --color-success-dark: #4a9c5d;
+    --color-alert-dark: #927f40;
+    --color-warning-dark: #927f40;
+    --color-error-dark: #da525d;
 }
 
 /****************** General settings ****************/
@@ -49,7 +60,8 @@ aside {
 
 aside img {
     height: auto;
-    width: 280px;
+    width: 100px;
+    margin-left: 90px;
 }
 
 .sidebar-link {
@@ -295,3 +307,27 @@ main {
 .step.active {
     background-color: var(--cor-azul-medio);
 }
+
+/**************** Messages Colors *****************/
+.message {
+    color: var(--color-dark-text);
+    text-align: center;
+  }
+  .message-error {
+    color: var(--color-error-dark);
+  }
+  .message-success {
+    color: var(--color-success-dark);
+  }
+  .message-warning {
+    color: var(--color-warning-dark);
+  }
+  .message-alert {
+    color: var(--color-alert-dark);
+  }
+  .message-info {
+    color: var(--color-info-dark);
+  }
+  .message-debug {
+    color: var(--color-debug-dark);
+  }

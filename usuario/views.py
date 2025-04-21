@@ -80,11 +80,11 @@ def register_view(request):
                     email=form_data['email'],
                     password=password,
                 )
-                messages.success(request, "Professor cadastrado com sucesso!")
+                messages.success(request, "Gestor cadastrado com sucesso!")
                 del request.session['form_data']
                 return redirect("usuario:login")
             else:
-                messages.error(request, "Resposta de segurança incorreta para cadastro de professor.")
+                messages.error(request, "Codigo de segurança incorreto.")
                 return render(request, "usuario/pages/register.html", {
                     'form_data': form_data,
                     'cursos': Curso.objects.all()

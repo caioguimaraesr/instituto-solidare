@@ -17,7 +17,7 @@
         <div class="login-form">
             <div class="wrapper-2">
                 <h1 id="form-title">Cadastro</h1>
-
+                {% include "usuario/partials/messages.html" %}
                 <form action="{% url 'usuario:register' %}" method="POST" id="multiStepForm">
                     {% csrf_token %}    
                     <!-- Etapa 1 -->
