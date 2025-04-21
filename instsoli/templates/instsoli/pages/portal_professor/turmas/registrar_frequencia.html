@@ -1,0 +1,63 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Registrar Frequência - {{ turma.nome }}</title>
+    <link rel="stylesheet" href="{% static 'instsoli/css/style.css' %}">
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+</head>
+<body>
+    {% include "instsoli/partials/sidebar.html" %}
+    
+    <main>
+        <div class="container-frequencia">
+            <h2>Registrar Frequência - {{ turma.nome }}</h2>
+            {% include "usuario/partials/messages.html" %}
+            
+            <form method="post">
+                {% csrf_token %}
+                <div class="form-group">
+                    <label for="data">Data:</label>
+                    <input type="date" id="data" name="data" value="{{ data_selecionada }}" required>
+                    <button type="submit" name="buscar" class="btn-buscar">Buscar</button>
+                </div>
+                
+                <div class="controles">
+                    <button type="button" onclick="marcarTodos(true)" class="btn-marcar">Marcar Todos</button>
+                    <button type="button" onclick="marcarTodos(false)" class="btn-desmarcar">Desmarcar Todos</button>
+                    <span class="contador">Presentes: <span id="contador-presentes">0</span> | Faltas: <span id="contador-faltas">0</span></span>
+                </div>
+                
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Aluno</th>
+                            <th>Presente</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for aluno in alunos %}
+                        <tr>
+                            <td>{{ aluno.user.get_full_name }}</td>
+                            <td>
+                                <input type="checkbox" 
+                                       name="presente_{{ aluno.id }}" 
+                                       id="aluno_{{ aluno.id }}"
+                                       {% if aluno.id in alunos_presentes %}checked{% elif aluno.id not in alunos_ausentes %}checked{% endif %}>
+                                <label for="aluno_{{ aluno.id }}"></label>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+                
+                <button type="submit" name="salvar" class="btn-salvar">Salvar Frequência</button>
+            </form>        
+        </div>
+    </main>
+
+    <script src="{% static "instsoli/js/scripts.js" %}"></script>
+</body>
+</html>

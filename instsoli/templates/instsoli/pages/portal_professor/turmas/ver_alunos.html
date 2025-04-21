@@ -1,0 +1,46 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Editar Turma</title>
+    <link rel="stylesheet" href="{% static 'instsoli/css/style.css' %}">
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+</head>
+<body>
+    {% include "instsoli/partials/sidebar.html" %}
+    
+    <main>
+        <div class="container-alunos">
+            <h2>Alunos da Turma {{ turma.nome }}</h2>
+
+            {% if alunos %}
+                <table class="tabela-alunos">
+                    <thead>
+                        <tr>
+                            <th>Nome</th>
+                            <th>E-mail</th>
+                            <th>CPF</th>
+                            <th>Telefone</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for aluno in alunos %}
+                            <tr>
+                                <td>{{ aluno.user.get_full_name }}</td>
+                                <td>{{ aluno.user.email }}</td>
+                                <td>{{ aluno.cpf }}</td>
+                                <td>{{ aluno.telefone }}</td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            {% else %}
+                <p>Nenhum aluno cadastrado nesta turma.</p>
+            {% endif %}
+        </div>
+    </main>
+</body>
+</html>
+
