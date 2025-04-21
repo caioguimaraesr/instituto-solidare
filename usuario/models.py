@@ -39,7 +39,7 @@ class InformacoesPessoais(models.Model):
     endereco = models.CharField(max_length=255)
     numero = models.CharField(max_length=10)
     bairro = models.CharField(max_length=100)
-    estado = models.CharField(max_length=50)
+    estado = models.CharField(max_length=100)
     cidade = models.CharField(max_length=100)
     escolaridade = models.CharField(max_length=100, choices=ESCOLARIDADE_CHOICES)
     escola = models.CharField(max_length=100)
@@ -47,4 +47,4 @@ class InformacoesPessoais(models.Model):
     curso = models.ForeignKey("instsoli.Curso", on_delete=models.CASCADE)
 
     def __str__(self):
-        return f'Informações de {self.user.username}'
+        return f'{self.user.username}'
