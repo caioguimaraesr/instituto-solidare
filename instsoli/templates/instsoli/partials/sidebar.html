@@ -16,16 +16,10 @@
         <h3 class="sidebar-title">Nossos cursos</h3>
     </a>
     
-    <!-- Inscrições -->
-    <a href="#" class="sidebar-link">
-        <i class='bx bx-user-circle'></i>
-        <h3 class="sidebar-title">Portal do aluno</h3>
-    </a>
-    
     <!-- Quem Somos -->
-    <a href="{% url "instsoli:portal_professor" %}" class="sidebar-link">
+    <a {% if user.is_superuser %} href="{% url "instsoli:portal_professor" %}" {% else %} href="#" {% endif %}class="sidebar-link">
         <i class='bx bx-chalkboard'></i>
-        <h3 class="sidebar-title">Portal do professor</h3>
+        <h3 class="sidebar-title">Acesso ao Portal</h3>
     </a>
 
     <!-- Listão de aprovados -->
