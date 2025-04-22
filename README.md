@@ -5,7 +5,7 @@ Bem-vindo ao repositório do projeto feito por alunos no 2º período da CESAR S
 
 ## Links
   <p style="text-align: center; text-decoration: none;">
-    <a href="https://www.figma.com/design/G8Y2tUKfveO4eC9zAr5rqU/Prot%C3%B3tipo?node-id=0-1&p=f" style="text-decoration: none;">
+    <a href="https://www.figma.com/design/V0WbTg4ZciPOLMuifcNVDr/Prot%C3%B3tipo--Copy-?node-id=0-1&t=k43LuYfNcD9fceEe-1 " style="text-decoration: none;">
       <span>Figma</span>
     </a>
   </p>
@@ -38,7 +38,13 @@ Bem-vindo ao repositório do projeto feito por alunos no 2º período da CESAR S
 <summary><h1>SR1</h1></summary>
   <p style="text-align: center; text-decoration: none;">
     <a href="#" style="text-decoration: none;">
-      <span>Screencasts do projeto</span>
+      <span>Screencast do Deploy</span>
+    </a>
+  </p>
+  
+  <p style="text-align: center; text-decoration: none;">
+    <a href="#" style="text-decoration: none;">
+      <span>Screencast do Protótipo</span>
     </a>
   </p>
 
@@ -54,7 +60,14 @@ Bem-vindo ao repositório do projeto feito por alunos no 2º período da CESAR S
       <span>Relatório Programação em Par</span>
     </a>
   </p>
-
   
+  <p style="text-align: center; text-decoration: none;">
+    <a href="https://docs.google.com/document/d/118fDORp-AMhUfvoctiRDJJBUXZchASk9owDDJVZj6Sw/edit?usp=drivesdk" style="text-decoration: none;">
+      <span>Histórias de usuário</span>
+    </a>
+  </p>
+
+  ## Issue/Bugtracker
+  ![bucktracker](https://github.com/user-attachments/assets/bc61c645-5877-4ee8-9d73-ded482888d91)
 </details>
 <br>
