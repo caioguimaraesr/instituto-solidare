@@ -43,12 +43,6 @@ Bem-vindo ao repositório do projeto feito por alunos no 2º período da CESAR S
   </p>
   
   <p style="text-align: center; text-decoration: none;">
-    <a href="#" style="text-decoration: none;">
-      <span>Screencast do Protótipo</span>
-    </a>
-  </p>
-
-  <p style="text-align: center; text-decoration: none;">
     <a href="https://miro.com/app/board/uXjVI_qNn9w=/?share_link_id=843219160909" 
     style="text-decoration: none;">
       <span>Diagrama de atividades</span>
