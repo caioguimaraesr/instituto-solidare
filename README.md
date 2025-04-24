@@ -11,12 +11,6 @@ Bem-vindo ao repositório do projeto feito por alunos no 2º período da CESAR S
   </p>
 
   <p style="text-align: center; text-decoration: none;">
-    <a href="#" style="text-decoration: none;">
-      <span>Screencasts</span>
-    </a>
-  </p>
-
-  <p style="text-align: center; text-decoration: none;">
     <a href="https://bloom-hma9f6avc4f9b0ht.brazilsouth-01.azurewebsites.net" style="text-decoration: none;">
       <span>Deploy</span>
     </a>
@@ -35,13 +29,7 @@ Bem-vindo ao repositório do projeto feito por alunos no 2º período da CESAR S
 ## ✅ Entregas
 
 <details>
-<summary><h1>SR1</h1></summary>
-  <p style="text-align: center; text-decoration: none;">
-    <a href="#" style="text-decoration: none;">
-      <span>Screencast do Deploy</span>
-    </a>
-  </p>
-  
+<summary><h1>SR1</h1></summary> 
   <p style="text-align: center; text-decoration: none;">
     <a href="https://miro.com/app/board/uXjVI_qNn9w=/?share_link_id=843219160909" 
     style="text-decoration: none;">
@@ -60,6 +48,9 @@ Bem-vindo ao repositório do projeto feito por alunos no 2º período da CESAR S
       <span>Histórias de usuário</span>
     </a>
   </p>
+
+  ## Screencast Deploy
+  https://github.com/user-attachments/assets/085a583c-76a7-4e99-b9f2-0978c5710d47
 
   ## Issue/Bugtracker
   ![bucktracker](https://github.com/user-attachments/assets/bc61c645-5877-4ee8-9d73-ded482888d91)
