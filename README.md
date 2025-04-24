@@ -52,6 +52,8 @@ Bem-vindo ao repositório do projeto feito por alunos no 2º período da CESAR S
   ## Screencast Deploy
   https://github.com/user-attachments/assets/085a583c-76a7-4e99-b9f2-0978c5710d47
 
+  ## Screencast do Protótipo de Baixa Fidelidade
+  https://github.com/user-attachments/assets/b56073a1-89cd-430d-a301-50b0f15d593f
   ## Issue/Bugtracker
   ![bucktracker](https://github.com/user-attachments/assets/bc61c645-5877-4ee8-9d73-ded482888d91)
 </details>
