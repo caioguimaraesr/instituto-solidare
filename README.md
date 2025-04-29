@@ -11,7 +11,7 @@ Bem-vindo ao repositório do projeto feito por alunos no 2º período da CESAR S
   </p>
 
   <p style="text-align: center; text-decoration: none;">
-    <a href="https://bloom-hma9f6avc4f9b0ht.brazilsouth-01.azurewebsites.net" style="text-decoration: none;">
+    <a href="https://g4bloom.azurewebsites.net/" style="text-decoration: none;">
       <span>Deploy</span>
     </a>
   </p>
