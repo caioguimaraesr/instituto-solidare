@@ -2,13 +2,23 @@ Cypress.Commands.add('createCurso', () => {
     cy.exec('python create_curso.py', { failOnNonZeroExit: false });
 });
 
-Cypress.Commands.add('deleteallcurso', () => {
+Cypress.Commands.add('deleteAllCurso', () => {
     cy.exec('python delete_curso.py', { failOnNonZeroExit: false });
 });
 
+Cypress.Commands.add('deleteAllUsers', () => {
+    cy.exec('python delete_user.py', { failOnNonZeroExit: false });
+});
+
+Cypress.Commands.add('deleteAllInformacoes', () => {
+    cy.exec('python delete_informacoes.py', { failOnNonZeroExit: false });
+});
 
 describe('teste de cadastro', () => {
     beforeEach(() => {
+        cy.deleteAllUsers();
+        cy.deleteAllInformacoes();
+        cy.deleteAllCurso()
         cy.createCurso();
     });
 
@@ -42,6 +52,8 @@ describe('teste de cadastro', () => {
         cy.get('.form-step.active > .btn-2').click();
     });
     afterEach(() => {
-        cy.deleteallcurso();
+        cy.deleteAllCurso();
+        cy.deleteAllUsers();
+        cy.deleteAllInformacoes();
     });   
 });
