@@ -1,9 +1,11 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required, user_passes_test
-from .models import Curso,Turma, Frequencia
+from .models import Curso,Turma, Frequencia, Aviso
 from usuario.models import InformacoesPessoais
 from django.shortcuts import render, get_object_or_404
 from django.contrib import messages
+from django.http import JsonResponse
+from django.views.decorators.csrf import csrf_exempt
 from datetime import date
 
 def is_admin(user):
@@ -203,11 +205,72 @@ def registrar_frequencia(request, id):
     alunos_presentes = [freq.aluno.id for freq in frequencias if freq.presente]
     alunos_ausentes = [freq.aluno.id for freq in frequencias if not freq.presente]
 
-    context = {
+    return render(request, 'instsoli/pages/portal_professor/turmas/registrar_frequencia.html', context = {
         'turma': turma,
         'alunos': alunos,
         'data_selecionada': data_selecionada,
         'alunos_presentes': alunos_presentes,
         'alunos_ausentes': alunos_ausentes,
+    })
+
+def avisos(request):
+    avisos = Aviso.objects.filter(professor=request.user).order_by('-data_criacao')
+    return render(request, 'instsoli/pages/portal_professor/avisos/avisos.html', context={
+        'avisos': avisos
+    })
+
+def criar_aviso(request):
+    if request.method == 'POST':
+        titulo = request.POST.get('titulo')
+        mensagem = request.POST.get('mensagem')
+        prioridade = request.POST.get('prioridade')
+
+        Aviso.objects.create(
+            professor=request.user,
+            titulo=titulo,
+            mensagem=mensagem,
+            prioridade=prioridade
+        )
+        return redirect('instsoli:avisos')
+
+def editar_aviso(request, aviso_id):
+    aviso = get_object_or_404(Aviso, id=aviso_id, professor=request.user)
+
+    if request.method == 'POST':
+        aviso.titulo = request.POST.get('titulo')
+        aviso.mensagem = request.POST.get('mensagem')
+        aviso.prioridade = request.POST.get('prioridade')
+        aviso.save()
+
+        if request.headers.get('x-requested-with') == 'XMLHttpRequest':
+            return JsonResponse({'success': True})
+        
+        return redirect('instsoli:avisos')
+
+    return render(request, 'editar_aviso.html', {'aviso': aviso})
+
+@login_required
+def get_aviso_data(request, aviso_id):
+    aviso = get_object_or_404(Aviso, id=aviso_id, professor=request.user)
+    data = {
+        'titulo': aviso.titulo,
+        'mensagem': aviso.mensagem,
+        'prioridade': aviso.prioridade,
     }
-    return render(request, 'instsoli/pages/portal_professor/turmas/registrar_frequencia.html', context)
+    return JsonResponse(data)
+
+@login_required
+def excluir_aviso(request, aviso_id):
+    aviso = get_object_or_404(Aviso, id=aviso_id, professor=request.user)
+    aviso.delete()
+    return redirect('instsoli:avisos')
+
+### portal do aluno
+def portal_aluno(request):
+    return render(request, 'instsoli/pages/portal_aluno/portal_aluno.html')
+
+def avisos_aluno(request):
+    avisos = Aviso.objects.all().order_by('-data_criacao')
+    return render(request, 'instsoli/pages/portal_aluno/avisos/avisos_aluno.html', context={
+        'avisos': avisos
+    })

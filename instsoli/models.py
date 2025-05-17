@@ -1,5 +1,7 @@
 from django.db import models
 from usuario.models import InformacoesPessoais
+from django.contrib.auth.models import User
+
 # Create your models here.
 class Curso(models.Model):
     nome = models.CharField(max_length=200)
@@ -31,3 +33,19 @@ class Frequencia(models.Model):
 
     def __str__(self):
         return f"{self.aluno.user.username} - {self.data} - {'Presente' if self.presente else 'Faltou'}"
+    
+class Aviso(models.Model):
+    PRIORIDADE_CHOICES = [
+        ('normal', 'Normal'),
+        ('importante', 'Importante'),
+        ('urgente', 'Urgente'),
+    ]
+
+    professor = models.ForeignKey(User, on_delete=models.CASCADE)
+    titulo = models.CharField(max_length=200)
+    mensagem = models.TextField()
+    prioridade = models.CharField(max_length=10, choices=PRIORIDADE_CHOICES, default='normal')
+    data_criacao = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return self.titulo

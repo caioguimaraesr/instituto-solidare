@@ -21,4 +21,14 @@ urlpatterns = [
     path('portal_professor/turmas/editar/<int:id>/', views.editar_turma, name='editar_turma'),
     path('portal_professor/turmas/alunos/<int:id>/', views.ver_alunos, name='ver_alunos'),
     path('portal_professor/turmas/frequencia/<int:id>', views.registrar_frequencia, name='registrar_frequencia'),
+    # avisos
+    path('avisos/', views.avisos, name='avisos'),
+    path('avisos/criar/', views.criar_aviso, name='criar_aviso'),
+    path('avisos/editar/<int:aviso_id>/', views.editar_aviso, name='editar_aviso'),
+    path('avisos/excluir/<int:aviso_id>/', views.excluir_aviso, name='excluir_aviso'),
+    path('avisos/get/<int:aviso_id>/', views.get_aviso_data, name='get_aviso_data'),
+
+    ## portal do aluno
+    path('portal_aluno/', views.portal_aluno, name='portal_aluno'),
+    path('portal_aluno/avisos_aluno/', views.avisos_aluno, name='avisos_aluno'),
 ]

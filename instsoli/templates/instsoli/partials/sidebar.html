@@ -17,7 +17,7 @@
     </a>
     
     <!-- Quem Somos -->
-    <a {% if user.is_superuser %} href="{% url "instsoli:portal_professor" %}" {% else %} href="#" {% endif %}class="sidebar-link">
+    <a {% if user.is_superuser %} href="{% url "instsoli:portal_professor" %}" {% else %} href="{% url "instsoli:portal_aluno" %}" {% endif %}class="sidebar-link">
         <i class='bx bx-chalkboard'></i>
         <h3 class="sidebar-title">Acesso ao Portal</h3>
     </a>

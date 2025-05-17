@@ -1,0 +1,145 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Instituto Solidare | Portal do Professor</title>
+    <link rel="stylesheet" href="{% static 'instsoli/css/style.css' %}">
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+</head>
+<body>
+    {% include "instsoli/partials/sidebar.html" %}
+
+    <main class="main-container">
+        <!-- Navbar específica para Avisos -->
+        <nav class="avisos-navbar">
+            <div class="navbar-content">
+                <h1 class="navbar-title">
+                    <i class='bx bx-bell'></i>
+                    Avisos
+                </h1>
+                <button id="abrirModal" class="btn-adicionar">
+                    <i class='bx bx-plus'></i> Adicionar Aviso
+                </button>
+            </div>
+        </nav>
+
+        <div class="avisos-content">
+            <div class="cards-container" id="avisosContainer">
+                {% for aviso in avisos %}
+                <div class="aviso-box">
+                    <div class="card-acoes">
+                        <a href="#" class="editar-btn"
+                           data-id="{{ aviso.id }}"
+                           data-titulo="{{ aviso.titulo }}"
+                           data-mensagem="{{ aviso.mensagem }}"
+                           data-prioridade="{{ aviso.prioridade }}">
+                            <i class="bx bx-pencil"></i>
+                        </a>
+                        <a href="{% url 'instsoli:excluir_aviso' aviso.id %}" class="bx-x"><i class="bx bx-x"></i></a>
+                    </div>
+                    <h3>{{ aviso.titulo }}</h3>
+                    <p>{{ aviso.mensagem }}</p>
+                    <div class="card-data">
+                        Publicado em: {{ aviso.data_criacao|date:"d/m/Y" }}
+                    </div>
+                </div>
+                {% empty %}
+                <p class="sem-avisos">Nenhum aviso cadastrado ainda.</p>
+                {% endfor %}
+            </div>
+        </div>
+
+        <!-- Modal para adicionar/editar aviso -->
+        <div id="avisoModal" class="modal">
+            <div class="modal-conteudo">
+                <div class="modal-header">
+                    <h2 id="modalTitulo">Adicionar Novo Aviso</h2>
+                    <span class="fechar-modal">&times;</span>
+                </div>
+                <form id="formAviso" method="POST" action="{% url 'instsoli:criar_aviso' %}">
+                    {% csrf_token %}
+                    <input type="hidden" id="avisoId" name="aviso_id">
+                    <div class="input-group">
+                        <label for="titulo">Título:</label>
+                        <input type="text" id="titulo" name="titulo" required>
+                    </div>
+                    <div class="input-group">
+                        <label for="mensagem">Mensagem:</label>
+                        <textarea id="mensagem" name="mensagem" required></textarea>
+                    </div>
+                    <div class="input-group">
+                        <label for="prioridade">Prioridade:</label>
+                        <select id="prioridade" name="prioridade">
+                            <option value="normal">Normal</option>
+                            <option value="importante">Importante</option>
+                            <option value="urgente">Urgente</option>
+                        </select>
+                    </div>
+                    <button type="submit" class="btn-salvar">Salvar Aviso</button>
+                </form>
+            </div>
+        </div>
+    </main>
+
+    <script src="{% static 'instsoli/js/scripts.js' %}"></script>
+    <script>
+        const modal = document.getElementById("avisoModal");
+        const btnAbrir = document.getElementById("abrirModal");
+        const btnFechar = document.querySelector(".fechar-modal");
+        const form = document.getElementById("formAviso");
+        const modalTitulo = document.getElementById("modalTitulo");
+
+        // Abrir modal para criar
+        btnAbrir.onclick = function () {
+            form.action = "{% url 'instsoli:criar_aviso' %}";
+            modalTitulo.textContent = "Adicionar Novo Aviso";
+            form.reset();
+            modal.style.display = "block";
+        }
+
+        // Fechar modal
+        btnFechar.onclick = function () {
+            modal.style.display = "none";
+        }
+
+        window.onclick = function (event) {
+            if (event.target == modal) {
+                modal.style.display = "none";
+            }
+        }
+
+        // Modal de edição
+        document.querySelectorAll('.editar-btn').forEach(btn => {
+            btn.addEventListener('click', function (e) {
+                e.preventDefault();
+                const avisoId = this.getAttribute('data-id');
+                const titulo = this.getAttribute('data-titulo');
+                const mensagem = this.getAttribute('data-mensagem');
+                const prioridade = this.getAttribute('data-prioridade');
+
+                document.getElementById('titulo').value = titulo;
+                document.getElementById('mensagem').value = mensagem;
+                document.getElementById('prioridade').value = prioridade;
+                document.getElementById('avisoId').value = avisoId;
+
+                form.action = "{% url 'instsoli:editar_aviso' 0 %}".replace("0", avisoId);  // Ajuste conforme sua URL de edição
+                modalTitulo.textContent = "Editar Aviso";
+                modal.style.display = "block";
+            });
+        });
+
+        // Confirmação para excluir aviso
+        document.querySelectorAll('.bx-x').forEach(item => {
+            item.addEventListener('click', function (e) {
+                if (!confirm('Tem certeza que deseja excluir este aviso?')) {
+                    e.preventDefault();
+                }
+            });
+        });
+    </script>
+</body>
+</html>
+

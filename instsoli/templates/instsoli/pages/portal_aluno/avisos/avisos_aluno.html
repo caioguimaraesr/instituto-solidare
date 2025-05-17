@@ -1,0 +1,76 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Instituto Solidare | Portal do Professor</title>
+    <link rel="stylesheet" href="{% static 'instsoli/css/style.css' %}">
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+</head>
+<body>
+    <style>
+        .container {
+            max-width: 900px;
+            margin: auto;
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+
+        .aviso {
+            border-left: 6px solid #6a1b9a;
+            background: #f9f9f9;
+            margin-bottom: 20px;
+            padding: 15px 20px;
+            border-radius: 6px;
+        }
+
+        .aviso h2 {
+            margin: 0 0 10px 0;
+            color: #333;
+        }
+
+        .aviso p {
+            margin: 5px 0;
+            color: #555;
+        }
+
+        .data {
+            font-size: 0.9em;
+            color: #888;
+            text-align: right;
+        }
+    </style>
+    {% include "instsoli/partials/sidebar.html" %}
+
+    <main>
+        <h1 style="font-size: 2rem; font-weight: bold; margin-bottom: 30px;">Portal do Aluno </h1>
+            <div class="container">
+            <h1>Avisos do Professor</h1>
+
+            {% if avisos %}
+                {% for aviso in avisos %}
+                    <div class="aviso">
+                        <h2>{{ aviso.titulo }}</h2>
+                        <p><strong>Mensagem:</strong> {{ aviso.mensagem }}</p>
+                        <p><strong>Prioridade:</strong> {{ aviso.prioridade }}</p>
+                        <p class="data">{{ aviso.data_criacao|date:"d/m/Y H:i" }}</p>
+                    </div>
+                {% endfor %}
+            {% else %}
+                <p>Nenhum aviso disponível no momento.</p>
+            {% endif %}
+        </div>  
+    </main>
+
+    <script src="{% static 'instsoli/js/scripts.js' %}"></script>
+</body>
+</html>

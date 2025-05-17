@@ -683,6 +683,308 @@ form input[type="file"]:focus {
     color: white;
     font-weight: 400;
 }
+/********************* Navbar de Avisos ***********************/
+.avisos-navbar {
+    background-color: var(--cor-azul-escuro);
+    color: var(--cor-branco);
+    padding: 1.5rem 2rem;
+    border-radius: 10px 10px 0 0;
+    margin-bottom: 0;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.navbar-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.navbar-title {
+    font-size: 1.8rem;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin: 0;
+}
+
+.navbar-title i {
+    font-size: 2rem;
+}
+
+.btn-adicionar {
+    background-color: var(--cor-branco);
+    color: var(--cor-azul-escuro);
+    border: none;
+    padding: 0.75rem 1.5rem;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: all 0.3s ease;
+}
+
+.btn-adicionar:hover {
+    background-color: var(--cor-azul-claro);
+    color: var(--cor-branco);
+    transform: translateY(-2px);
+}
+
+/********************* Container Principal ***********************/
+.main-container {
+    padding: 0;
+    background-color: var(--cor-branco);
+    border-radius: 10px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    margin: 20px;
+}
+
+.avisos-content {
+    background-color: #f9f9f9;
+    border-radius: 0 0 10px 10px;
+    padding: 2rem;
+}
+
+/********************* Cards de Avisos ***********************/
+.cards-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+    gap: 1.5rem;
+}
+
+.aviso-box {
+    background-color: var(--cor-branco);
+    border-radius: 10px;
+    padding: 1.5rem;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    position: relative;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    min-height: 250px;
+    display: flex;
+    flex-direction: column;
+}
+
+.aviso-box:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+}
+
+.aviso-box h3 {
+    font-size: 1.25rem;
+    margin-bottom: 1rem;
+    color: var(--cor-azul-escuro);
+}
+
+.aviso-box p {
+    color: var(--cor-cinza-escuro);
+    margin-bottom: 1.5rem;
+    line-height: 1.6;
+    flex-grow: 1;
+    overflow-y: auto;
+    max-height: 150px;
+    padding-right: 8px;
+}
+
+.aviso-box p::-webkit-scrollbar {
+    width: 6px;
+}
+
+.aviso-box p::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 10px;
+}
+
+.aviso-box p::-webkit-scrollbar-thumb {
+    background: #c1c1c1;
+    border-radius: 10px;
+}
+
+.aviso-box p::-webkit-scrollbar-thumb:hover {
+    background: #a8a8a8;
+}
+
+.card-data {
+    font-size: 0.85rem;
+    color: var(--cor-cinza-claro);
+    margin-top: auto;
+}
+
+.card-acoes {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    display: flex;
+    gap: 0.75rem;
+}
+
+.editar-btn, .bx-x {
+    color: var(--cor-cinza-claro);
+    font-size: 1.25rem;
+    transition: color 0.3s ease, transform 0.2s ease;
+    cursor: pointer;
+}
+
+.editar-btn:hover {
+    color: var(--cor-azul-claro);
+    transform: scale(1.1);
+}
+
+.bx-x:hover {
+    color: #e53935;
+    transform: scale(1.1);
+}
+
+.sem-avisos {
+    grid-column: 1 / -1;
+    text-align: center;
+    color: var(--cor-cinza-claro);
+    padding: 2rem;
+}
+
+/********************* Modal ***********************/
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+}
+
+.modal-conteudo {
+    background-color: var(--cor-branco);
+    margin: 5% auto;
+    padding: 2rem;
+    border-radius: 10px;
+    width: 90%;
+    max-width: 600px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+}
+
+.modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.5rem;
+}
+
+.modal-header h2 {
+    color: var(--cor-azul-escuro);
+    margin: 0;
+}
+
+.fechar-modal {
+    color: var(--cor-cinza-claro);
+    font-size: 2rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: color 0.3s ease;
+}
+
+.fechar-modal:hover {
+    color: var(--cor-cinza-escuro);
+}
+
+.input-group {
+    margin-bottom: 1.5rem;
+}
+
+.input-group label {
+    display: block;
+    margin-bottom: 0.5rem;
+    color: var(--cor-cinza-escuro);
+    font-weight: 500;
+}
+
+.input-group input,
+.input-group textarea,
+.input-group select {
+    width: 100%;
+    padding: 0.75rem;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    font-size: 1rem;
+    transition: border-color 0.3s ease;
+}
+
+.input-group input:focus,
+.input-group textarea:focus,
+.input-group select:focus {
+    border-color: var(--cor-azul-claro);
+    outline: none;
+}
+
+.input-group textarea {
+    min-height: 150px;
+    resize: vertical;
+}
+
+.btn-salvar {
+    background-color: var(--cor-azul-escuro);
+    color: var(--cor-branco);
+    border: none;
+    padding: 0.75rem 1.5rem;
+    border-radius: 8px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    width: 100%;
+}
+
+.btn-salvar:hover {
+    background-color: var(--cor-azul-medio);
+}
+
+/********************* Prioridades ***********************/
+.aviso-box[data-prioridade="importante"] {
+    border-left: 4px solid #FFC107;
+}
+
+.aviso-box[data-prioridade="urgente"] {
+    border-left: 4px solid #F44336;
+}
+
+/********************* Responsividade ***********************/
+@media (max-width: 768px) {
+    .navbar-content {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 1rem;
+    }
+    
+    .navbar-title {
+        font-size: 1.5rem;
+    }
+    
+    .btn-adicionar {
+        width: 100%;
+        justify-content: center;
+    }
+    
+    .main-container {
+        margin: 10px;
+    }
+    
+    .avisos-content {
+        padding: 1rem;
+    }
+    
+    .cards-container {
+        grid-template-columns: 1fr;
+    }
+    
+    .modal-conteudo {
+        margin: 10% auto;
+        width: 95%;
+    }
+}
 
 /**************** Messages Colors *****************/
 .message {

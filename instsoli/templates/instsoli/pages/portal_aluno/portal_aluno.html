@@ -13,15 +13,15 @@
     {% include "instsoli/partials/sidebar.html" %}
 
     <main style="padding: 20px;">
-        <h1 style="font-size: 2rem; font-weight: bold; margin-bottom: 30px;">Portal do Professor</h1>
+        <h1 style="font-size: 2rem; font-weight: bold; margin-bottom: 30px;">Portal do Aluno </h1>
         <section style="display: flex; flex-wrap: wrap; gap: 20px;">
             
             <!-- Card 1 -->
             <div class="card">
-                <i class='bx bxs-chalkboard icon'></i>
-                <h3>Turmas Atribuídas</h3>
-                <p>Visualize suas turmas e alunos matriculados.</p>
-                <a href="{% url "instsoli:gerenciar_turmas" %}">Acessar</a>
+                <i class='bx bx-bell icon'></i>
+                <h3>Avisos</h3>
+                <p>Veja os principais avisos dos professores</p>
+                <a href="{% url "instsoli:avisos_aluno" %}">Acessar</a>
             </div>
 
             <!-- Card 2 -->
@@ -50,10 +50,10 @@
             
             <!-- Card 5 -->
             <div class="card">
-                <i class='bx bx-bell icon'></i>
-                <h3>Avisos</h3>
-                <p>Cadastre avisos para os alunos</p>
-                <a href="{% url "instsoli:avisos" %}">Acessar</a>
+                <i class='bx bxs-chalkboard icon'></i>
+                <h3>Turmas Atribuídas</h3>
+                <p>Visualize suas turmas e alunos matriculados.</p>
+                <a href="{% url "instsoli:gerenciar_turmas" %}">Acessar</a>
             </div>
 
         </section>
