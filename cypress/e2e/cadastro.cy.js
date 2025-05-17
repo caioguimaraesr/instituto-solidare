@@ -51,6 +51,7 @@ describe('teste de cadastro', () => {
         cy.get('#curso').select('Iniciação a Programação');
         cy.get('.form-step.active > .btn-2').click();
     });
+    
     afterEach(() => {
         cy.deleteAllCurso();
         cy.deleteAllUsers();
