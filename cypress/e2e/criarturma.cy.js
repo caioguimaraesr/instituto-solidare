@@ -1,3 +1,7 @@
+Cypress.Commands.add('createCurso', () => {
+    cy.exec('python create_curso.py', { failOnNonZeroExit: false });
+});
+
 Cypress.Commands.add('deleteAllCurso', () => {
     cy.exec('python delete_curso.py', { failOnNonZeroExit: false });
 });
@@ -9,7 +13,9 @@ Cypress.Commands.add('deleteAllUsers', () => {
 Cypress.Commands.add('deleteAllInformacoes', () => {
     cy.exec('python delete_informacoes.py', { failOnNonZeroExit: false });
 });
-
+Cypress.Commands.add('createAluno', () => {
+    cy.exec('python create_aluno.py', { failOnNonZeroExit: false });
+});
 Cypress.Commands.add('login', (username, password) => {
     cy.visit('/auth/login/');
     cy.get('#username').type(username)
@@ -56,13 +62,15 @@ Cypress.Commands.add('createSuperUser', (username, email, password, confirm_pass
     cy.get('#cod_seguranca').type(senha_professor)
     cy.get('#submit-professor').click();
 });
-
-describe('teste de cadastro', () => {
+describe('', () => {
     beforeEach(() => {
         cy.deleteAllUsers();
         cy.deleteAllInformacoes();
-        cy.deleteAllCurso();       
+        cy.deleteAllCurso();
+        cy.createAluno();
+        
         Cypress.on('uncaught:exception', (err, runnable) => {
+            // Ignora erros de elementos não encontrados
             if (err.message.includes('document.getElementById') || 
                 err.message.includes('null') ||
                 err.message.includes('undefined')) {
@@ -72,47 +80,69 @@ describe('teste de cadastro', () => {
         })
     });
 
-    it('adicionar curso', () => {
-        cy.createSuperUser('usuarioteste', 'usuarioteste@gmail.com', '123', '123', 'Gestor', 'instituto-solidare');
+    it('criar tuma', () => {
+        cy.createSuperUser('usuarioteste', 'usuarioteste@gmail.com', '123', '123', 'Gestor',      'instituto-solidare');
         cy.login('usuarioteste', '123');
-        cy.get('[href="/cursos/"]').click();
-        cy.get('[href="/cursos/criar/"]').click();
-        cy.get('#nome').type('Curso teste');
-        cy.get('#desc').type('Descricao teste');
-        cy.get('.botao_criar-turma').click();     
-    });
-
-    it('editar curso', () => {   
-        cy.createSuperUser('usuarioteste', 'usuarioteste@gmail.com', '123', '123', 'Gestor', 'instituto-solidare');
-        cy.login('usuarioteste', '123');
-        cy.get('[href="/cursos/"]').click();
-        cy.get('[href="/cursos/criar/"]').click();
-        cy.get('#nome').type('Curso teste');
-        cy.get('#desc').type('Descricao teste');
-        cy.get('.botao_criar-turma').click();
-        cy.get('[href="/cursos/gerenciar_cursos/"]').click();
-        cy.get('.icone-editar > .bx').click();
-        cy.get('#nome').clear().type('editando nome do curso teste');
-        cy.get('#desc').clear().type('alterando a descricao do curso teste');
+        cy.get('[href="/portal_professor/"]').click();
+        cy.get('section > :nth-child(1) > a').click();
+        cy.get('.btn-criar-turma').click();
+        cy.get('#nome').type('Turma teste');
+        cy.get('#curso').select('Iniciação a Programação');
+        cy.get('#data_inicio').type('2025-05-17');
+        cy.get('#data_fim').type('2029-05-17');
+        cy.get('.select2-search').type('Rafael Ferraz');
+        cy.get('.select2-results__option').contains('Rafael Ferraz').click();
         cy.get('.botao_criar-turma').click();
     });
 
-    it('deletar curso', () => {    
-        cy.createSuperUser('usuarioteste', 'usuarioteste@gmail.com', '123', '123', 'Gestor', 'instituto-solidare');
+    it('ver aluno', () => {
+       cy.createSuperUser('usuarioteste', 'usuarioteste@gmail.com', '123', '123', 'Gestor',      'instituto-solidare');
         cy.login('usuarioteste', '123');
-        cy.get('[href="/cursos/"]').click();
-        cy.get('[href="/cursos/criar/"]').click();
-        cy.get('#nome').type('Curso teste');
-        cy.get('#desc').type('Descricao teste');
-        cy.get('.botao_criar-turma').click();    
-        cy.get('[href="/cursos/gerenciar_cursos/"]').click();
-        cy.get('.icone-deletar > .bx').click();
+        cy.get('[href="/portal_professor/"]').click();
+        cy.get('section > :nth-child(1) > a').click();
+        cy.get('.btn-criar-turma').click();
+        cy.get('#nome').type('Turma teste');
+        cy.get('#curso').select('Iniciação a Programação');
+        cy.get('#data_inicio').type('2025-05-17');
+        cy.get('#data_fim').type('2029-05-17');
+        cy.get('.select2-search').type('Rafael Ferraz');
+        cy.get('.select2-results__option').contains('Rafael Ferraz').click();
+        cy.get('.botao_criar-turma').click();
+        
+        cy.contains('a', 'Ver Alunos').click();
+
+    });
+
+     it('editar turma', () => {
+       cy.createSuperUser('usuarioteste', 'usuarioteste@gmail.com', '123', '123', 'Gestor',      'instituto-solidare');
+        cy.login('usuarioteste', '123');
+        cy.get('[href="/portal_professor/"]').click();
+        cy.get('section > :nth-child(1) > a').click();
+        cy.get('.btn-criar-turma').click();
+        cy.get('#nome').type('Turma teste');
+        cy.get('#curso').select('Iniciação a Programação');
+        cy.get('#data_inicio').type('2025-05-17');
+        cy.get('#data_fim').type('2029-05-17');
+        cy.get('.select2-search').type('Rafael Ferraz');
+        cy.get('.select2-results__option').contains('Rafael Ferraz').click();
+        cy.get('.botao_criar-turma').click();
+        
+        cy.contains('a', 'Editar turma').click();
+        cy.get('#nome').clear().type('Editando o nome da turma teste');
+        cy.get('#data_inicio').clear().type('2022-10-17');
+        cy.get('#data_fim').clear().type('2026-10-17');
+        cy.get('.botao_criar-turma').click();
+        
 
     });
     
+
+
+
+
+
     afterEach(() => {
-        cy.deleteAllInformacoes();
         cy.deleteAllUsers();
-        cy.deleteAllCurso();
+        cy.deleteAllInformacoes();
     });   
 });
