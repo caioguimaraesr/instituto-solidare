@@ -1,0 +1,22 @@
+{
+  "name": "instituto-solidare",
+  "version": "1.0.0",
+  "description": "Bem-vindo ao repositório do projeto feito por alunos no 2º período da CESAR School na Disciplina de Projetos\r <br>",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mateusdinizz/instituto-solidare.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/mateusdinizz/instituto-solidare/issues"
+  },
+  "homepage": "https://github.com/mateusdinizz/instituto-solidare#readme",
+  "dependencies": {
+    "cypress": "^14.3.3"
+  }
+}
