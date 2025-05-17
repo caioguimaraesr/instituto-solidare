@@ -65,11 +65,12 @@ class Solicitacao(models.Model):
     ]
 
     titulo = models.CharField(max_length=100)
-    mensagem = models.TextField()
+    mensagem = models.TextField(default='')
     tipo = models.CharField(max_length=20, choices=TIPO_CHOICES)
     status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='pendente')
     aluno = models.ForeignKey(User, on_delete=models.CASCADE, related_name='solicitacoes_enviadas')
     professor = models.ForeignKey(User, on_delete=models.CASCADE, related_name='solicitacoes_recebidas', null=True, blank=True)
+    solucao_resposta = models.TextField(default='')
     data_criacao = models.DateTimeField(auto_now_add=True)
     data_atualizacao = models.DateTimeField(auto_now=True)
 

@@ -1,10 +1,11 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required, user_passes_test
-from .models import Curso,Turma, Frequencia, Aviso
+from .models import Curso,Turma, Frequencia, Aviso, Solicitacao
 from usuario.models import InformacoesPessoais
 from django.shortcuts import render, get_object_or_404
 from django.contrib import messages
 from django.http import JsonResponse
+import json
 from django.views.decorators.csrf import csrf_exempt
 from datetime import date
 
@@ -213,6 +214,7 @@ def registrar_frequencia(request, id):
         'alunos_ausentes': alunos_ausentes,
     })
 
+# avisos professor
 def avisos(request):
     avisos = Aviso.objects.filter(professor=request.user).order_by('-data_criacao')
     return render(request, 'instsoli/pages/portal_professor/avisos/avisos.html', context={
@@ -274,3 +276,70 @@ def avisos_aluno(request):
     return render(request, 'instsoli/pages/portal_aluno/avisos/avisos_aluno.html', context={
         'avisos': avisos
     })
+
+# solicitacoes
+from django.shortcuts import render, get_object_or_404, redirect
+from django.http import JsonResponse, HttpResponseForbidden
+from django.contrib.auth.decorators import login_required
+from django.views.decorators.http import require_http_methods
+from .models import Solicitacao
+
+from django.contrib.auth.decorators import login_required
+from .models import Solicitacao
+
+@login_required
+def list_solicitacoes(request):
+    solicitacoes = Solicitacao.objects.filter(aluno=request.user)
+    return render(request, 'instsoli/pages/portal_aluno/solicitacoes/minhas_solicitacoes.html', context={
+        'solicitacoes': solicitacoes
+    })
+
+@login_required
+@require_http_methods(["POST"])
+def create_solicitacao(request):
+    titulo = request.POST.get('titulo')
+    mensagem = request.POST.get('mensagem')
+    tipo = request.POST.get('tipo')
+
+    Solicitacao.objects.create(
+        titulo=titulo,
+        mensagem=mensagem,
+        tipo=tipo,
+        aluno=request.user,
+    )
+    return redirect('instsoli:listar_solicitacoes')
+
+
+@login_required
+def edit_solicitacao(request, pk):
+    solicitacao = get_object_or_404(Solicitacao, pk=pk)
+
+    if solicitacao.professor != request.user and solicitacao.aluno != request.user:
+        return HttpResponseForbidden()
+
+    if request.method == 'GET':
+        return JsonResponse({
+            'titulo': solicitacao.titulo,
+            'mensagem': solicitacao.mensagem,
+            'tipo': solicitacao.tipo,
+            'status': None,
+        })
+
+    elif request.method == 'POST':
+        solicitacao.titulo = request.POST.get('titulo')
+        solicitacao.mensagem = request.POST.get('mensagem')
+        solicitacao.tipo = request.POST.get('tipo')
+        solicitacao.save()
+        return redirect('instsoli:listar_solicitacoes')
+
+
+@login_required
+@require_http_methods(["POST"])
+def delete_solicitacao(request, pk):
+    solicitacao = get_object_or_404(Solicitacao, pk=pk)
+
+    if solicitacao.professor != request.user and solicitacao.aluno != request.user:
+        return HttpResponseForbidden()
+
+    solicitacao.delete()
+    return redirect('instsoli:listar_solicitacoes')

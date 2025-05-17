@@ -1,0 +1,341 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bloom | Portal do Professor</title>
+    <link rel="stylesheet" href="{% static 'instsoli/css/style.css' %}">
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+</head>
+<body>
+    <style>
+        /* Seção de Solicitações */
+        .solicitacoes {
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .solicitacoes .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .solicitacoes .header h1 {
+            font-size: 1.5rem;
+            color: #333;
+            margin: 0;
+        }
+
+        /* Tabela de Solicitações */
+        .tabela-solicitacoes {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .tabela-solicitacoes thead {
+            background-color: #f8f9fa;
+        }
+
+        .tabela-solicitacoes th,
+        .tabela-solicitacoes td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid #dee2e6;
+        }
+
+        .tabela-solicitacoes th {
+            font-weight: 600;
+            color: #495057;
+        }
+
+        .tabela-solicitacoes tbody tr:hover {
+            background-color: #f8f9fa;
+        }
+
+        .tabela-solicitacoes tbody tr td:last-child {
+            display: flex;
+            gap: 10px;
+        }
+
+        /* Botões */
+        .btn {
+            padding: 8px 16px;
+            border-radius: 4px;
+            border: none;
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+
+        .btn-primary {
+            background-color: #4e73df;
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background-color: #3a5ec0;
+        }
+
+        .btn-editar, .btn-deletar {
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 5px;
+            font-size: 1.2rem;
+            color: #6c757d;
+            transition: color 0.3s ease;
+        }
+
+        .btn-editar:hover {
+            color: #4e73df;
+        }
+
+        .btn-deletar:hover {
+            color: #e74a3b;
+        }
+
+        /* Modais */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            overflow: auto;
+        }
+
+        .modal-content {
+            background-color: #fff;
+            margin: 5% auto;
+            padding: 2rem;
+            border-radius: 8px;
+            width: 80%;
+            max-width: 600px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+            position: relative;
+        }
+
+        .modal .close {
+            position: absolute;
+            right: 1.5rem;
+            top: 1rem;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: #6c757d;
+        }
+
+        .modal h2 {
+            margin-top: 0;
+            color: #333;
+            margin-bottom: 1.5rem;
+        }
+
+        .modal form {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .modal input,
+        .modal textarea,
+        .modal select {
+            padding: 10px;
+            border: 1px solid #ced4da;
+            border-radius: 4px;
+            font-size: 1rem;
+        }
+
+        .modal textarea {
+            min-height: 100px;
+            resize: vertical;
+        }
+
+        .modal .btn-danger {
+            background-color: #e74a3b;
+            color: white;
+        }
+
+        .modal .btn-danger:hover {
+            background-color: #c53020;
+        }
+
+        /* Status - cores indicativas */
+        [data-status="pendente"] {
+            color: #f6c23e;
+        }
+
+        [data-status="em_andamento"] {
+            color: #36b9cc;
+        }
+
+        [data-status="resolvido"] {
+            color: #1cc88a;
+        }
+
+        /* Responsividade */
+        @media (max-width: 768px) {
+            .main-content {
+                margin-left: 0;
+                width: 100%;
+                padding: 1rem;
+            }
+            
+            .solicitacoes .header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 1rem;
+            }
+            
+            .tabela-solicitacoes {
+                display: block;
+                overflow-x: auto;
+            }
+            
+            .modal-content {
+                width: 95%;
+                margin: 10% auto;
+            }
+        }
+    </style>
+    {% include "instsoli/partials/sidebar.html" %}
+
+    <main class="main-content">
+
+        <section class="solicitacoes">
+            <div class="header">
+                <h1>Minhas Solicitações</h1>
+                <button id="btnNovaSolicitacao" class="btn btn-primary">+ Nova Solicitação</button>
+            </div>
+
+            <table class="tabela-solicitacoes">
+                <thead>
+                    <tr>
+                        <th>Título</th>
+                        <th>Tipo</th>
+                        <th>Status</th>
+                        <th>Data</th>
+                        <th>Ações</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for solicitacao in solicitacoes %}
+                    <tr data-id="{{ solicitacao.id }}">
+                        <td>{{ solicitacao.titulo }}</td>
+                        <td>{{ solicitacao.get_tipo_display }}</td>
+                        <td>{{ solicitacao.get_status_display }}</td>
+                        <td>{{ solicitacao.data_criacao|date:"d/m/Y H:i" }}</td>
+                        <td>
+                            <button class="btn-editar" data-id="{{ solicitacao.id }}">
+                                <i class='bx bx-edit'></i>
+                            </button>
+                            <button class="btn-deletar" data-id="{{ solicitacao.id }}">
+                                <i class='bx bx-trash'></i>
+                            </button>
+                        </td>
+                    </tr>
+                    {% empty %}
+                    <tr><td colspan="6">Nenhuma solicitação encontrada.</td></tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </section>
+
+        <!-- Modal Criar -->
+        <div id="modalCriar" class="modal">
+            <div class="modal-content">
+                <span class="close" onclick="fecharModal('modalCriar')">&times;</span>
+                <h2>Nova Solicitação</h2>
+                <form id="formCriar" method="post" action="{% url 'instsoli:criar_solicitacoes' %}">
+                    {% csrf_token %}
+                    <input type="text" name="titulo" placeholder="Título" required>
+                    <textarea name="mensagem" placeholder="Mensagem" required></textarea>
+                    <select name="tipo" required>
+                        <option value="duvida">Dúvida</option>
+                        <option value="problema">Problema</option>
+                        <option value="sugestao">Sugestão</option>
+                        <option value="outro">Outro</option>
+                    </select>
+                    <button type="submit" class="btn">Enviar</button>
+                </form>
+            </div>
+        </div>
+
+        <!-- Modal Editar -->
+        <div id="modalEditar" class="modal">
+            <div class="modal-content">
+                <span class="close" onclick="fecharModal('modalEditar')">&times;</span>
+                <h2>Editar Solicitação</h2>
+                <form id="formEditar" method="post">
+                    {% csrf_token %}
+                    <input type="text" name="titulo" id="editarTitulo" required>
+                    <textarea name="mensagem" id="editarMensagem" required></textarea>
+                    <select name="tipo" id="editarTipo" required>
+                        <option value="duvida">Dúvida</option>
+                        <option value="problema">Problema</option>
+                        <option value="sugestao">Sugestão</option>
+                        <option value="outro">Outro</option>
+                    </select>
+                    <button type="submit" class="btn">Salvar</button>
+                </form>
+            </div>
+        </div>
+
+        <!-- Modal Deletar -->
+        <div id="modalDeletar" class="modal">
+            <div class="modal-content">
+                <span class="close" onclick="fecharModal('modalDeletar')">&times;</span>
+                <h2>Confirmar Exclusão</h2>
+                <p>Tem certeza que deseja excluir esta solicitação?</p>
+                <form id="formDeletar" method="post">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-danger">Excluir</button>
+                </form>
+            </div>
+        </div>
+
+    </main>
+
+    <script src="{% static 'instsoli/js/scripts.js' %}"></script>
+    <script>
+        const abrirModal = (id) => document.getElementById(id).style.display = 'block';
+        const fecharModal = (id) => document.getElementById(id).style.display = 'none';
+
+        document.getElementById('btnNovaSolicitacao').addEventListener('click', () => abrirModal('modalCriar'));
+
+        // Editar
+        document.querySelectorAll('.btn-editar').forEach(btn => {
+            btn.addEventListener('click', () => {
+                const id = btn.dataset.id;
+                fetch(`/portal_aluno/editar_solicitacoes/${id}/`)
+                    .then(res => res.json())
+                    .then(data => {
+                        document.getElementById('formEditar').action = `/portal_aluno/editar_solicitacoes/${id}/`;
+                        document.getElementById('editarTitulo').value = data.titulo;
+                        document.getElementById('editarMensagem').value = data.mensagem;
+                        document.getElementById('editarTipo').value = data.tipo;
+                        abrirModal('modalEditar');
+                    });
+            });
+        });
+
+        // Deletar
+        document.querySelectorAll('.btn-deletar').forEach(btn => {
+            btn.addEventListener('click', () => {
+                const id = btn.dataset.id;
+                document.getElementById('formDeletar').action = `/portal_aluno/deletar_solicitacoes/${id}/`;
+                abrirModal('modalDeletar');
+            });
+        });
+    </script>
+</body>
+</html>
