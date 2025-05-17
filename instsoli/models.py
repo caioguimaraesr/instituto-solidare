@@ -49,3 +49,34 @@ class Aviso(models.Model):
 
     def __str__(self):
         return self.titulo
+    
+class Solicitacao(models.Model):
+    TIPO_CHOICES = [
+        ('duvida', 'Dúvida'),
+        ('problema', 'Problema'),
+        ('sugestao', 'Sugestão'),
+        ('outro', 'Outro'),
+    ]
+    
+    STATUS_CHOICES = [
+        ('pendente', 'Pendente'),
+        ('em_andamento', 'Em Andamento'),
+        ('resolvido', 'Resolvido'),
+    ]
+
+    titulo = models.CharField(max_length=100)
+    mensagem = models.TextField()
+    tipo = models.CharField(max_length=20, choices=TIPO_CHOICES)
+    status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='pendente')
+    aluno = models.ForeignKey(User, on_delete=models.CASCADE, related_name='solicitacoes_enviadas')
+    professor = models.ForeignKey(User, on_delete=models.CASCADE, related_name='solicitacoes_recebidas', null=True, blank=True)
+    data_criacao = models.DateTimeField(auto_now_add=True)
+    data_atualizacao = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        verbose_name = 'Solicitação'
+        verbose_name_plural = 'Solicitações'
+        ordering = ['-data_criacao']
+
+    def __str__(self):
+        return f"{self.titulo} - {self.get_status_display()}"

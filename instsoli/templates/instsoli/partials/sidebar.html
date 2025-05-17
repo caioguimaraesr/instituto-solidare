@@ -45,4 +45,13 @@
         <i class='bx bxs-cog'></i>
         <h3 class="sidebar-title">Ajustes</h3>
     </a>
+
+    {% if user.is_authenticated %}
+    <!-- Logout -->
+    <a href="{% url "usuario:logout" %}" class="sidebar-link">
+        <i class='bx bx-log-out'></i>
+        <h3 class="sidebar-title">Logout</h3>
+    </a>
+    {% endif %}
+    
 </aside>
