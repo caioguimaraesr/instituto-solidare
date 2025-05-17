@@ -159,5 +159,4 @@ def login_view(request):
 @login_required(login_url='usuario:login')
 def logout_view(request):
     logout(request)
-    messages.success(request, 'Logout realizado com sucesso!')
     return redirect('usuario:login')
