@@ -38,11 +38,14 @@
                            data-prioridade="{{ aviso.prioridade }}">
                             <i class="bx bx-pencil"></i>
                         </a>
-                        <a href="{% url 'instsoli:excluir_aviso' aviso.id %}" class="bx-x"><i class="bx bx-x"></i></a>
+                        <a href="{% url 'instsoli:excluir_aviso' aviso.id %}"
+                            <i class="bx bx-x"></i>
+                        </a>
                     </div>
                     <h3>{{ aviso.titulo }}</h3>
                     <p>{{ aviso.mensagem }}</p>
                     <div class="card-data">
+                        Professor: {{ aviso.professor }} <br>
                         Publicado em: {{ aviso.data_criacao|date:"d/m/Y" }}
                     </div>
                 </div>
