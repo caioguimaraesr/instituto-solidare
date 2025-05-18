@@ -119,10 +119,10 @@ class Aprovado(models.Model):
     def cpf_mascarado(self):
         """
         Exibe apenas os 3 dígitos centrais do CPF.
-        Ex: ***.456.***-**
+        Ex: ***.456.789-**
         """
         if len(self.cpf) == 14:
-            return f"***.{self.cpf[4:7]}.***-**"
+            return f"***.{self.cpf[4:11]}-**"
         return "CPF inválido"
 
     def __str__(self):

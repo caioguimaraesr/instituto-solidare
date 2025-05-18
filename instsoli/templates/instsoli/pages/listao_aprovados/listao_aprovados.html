@@ -19,7 +19,6 @@
             padding-bottom: 0.5rem;
         }
 
-        /* Container dos cards */
         .container-listao {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
@@ -27,7 +26,6 @@
             margin-top: 2rem;
         }
 
-        /* Cards estilizados */
         .card-listao {
             background: white;
             border-radius: 10px;
@@ -59,7 +57,6 @@
             color: #333;
         }
 
-        /* Botões */
         .abrirModal {
             background-color: #4a6fa5;
             color: white;
@@ -76,7 +73,6 @@
             background-color: #3a5a80;
         }
 
-        /* Modais */
         .modal {
             position: fixed;
             top: 0;
@@ -118,7 +114,6 @@
             color: #333;
         }
 
-        /* Tabelas */
         table {
             width: 100%;
             border-collapse: collapse;
@@ -177,7 +172,6 @@
             color: white;
         }
 
-        /* Responsivo */
         @media (max-width: 768px) {
             .title-listao {
                 flex-direction: column;
@@ -196,7 +190,6 @@
             }
         }
 
-        /* Responsividade */
         @media (max-width: 768px) {
             main {
                 margin-left: 0;
@@ -218,6 +211,9 @@
         <div class="title-listao">
             <i class='bx bxs-graduation'></i>
             <h1>Listão de Aprovados</h1>
+            <div class="add-listao">
+                <button class="abrirModal" data-modal-id="modalAdicionarListao">+ Adicionar listão</button>
+            </div>
         </div>
 
         <div class="container-listao">
@@ -257,6 +253,41 @@
                 </div>
             </div>
         {% endfor %}
+
+        <!-- Modal de Cadastro de Listão -->
+        <div id="modalAdicionarListao" class="modal hidden">
+            <div class="modal-content">
+                <span class="fecharModal" data-modal-id="modalAdicionarListao">&times;</span>
+                <h2>Adicionar Novo Listão</h2>
+
+                <form method="post" action="{% url 'instsoli:adicionar_listao' %}">
+                    {% csrf_token %}
+
+                    <div style="margin-bottom: 1rem;">
+                        <label for="codigo">Código do Semestre:</label><br>
+                        <input type="text" id="codigo" name="codigo" required style="width: 100%; padding: 8px; border: 1px solid #ccc; border-radius: 5px;">
+                    </div>
+
+                    <div style="margin-bottom: 1rem;">
+                        <label for="curso">Curso:</label><br>
+                        <select id="curso" name="curso" required>
+                            {% for curso in cursos %}
+                                <option value="{{ curso.id }}">{{ curso.nome }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+
+                    <div style="margin-bottom: 1rem;">
+                        <label for="aprovados">Aprovados (Nome - CPF, um por linha):</label><br>
+                        <textarea id="aprovados" name="aprovados" rows="6" required placeholder="Ex: João da Silva, 123.456.789-00" style="width: 100%; padding: 8px; border: 1px solid #ccc; border-radius: 5px;"></textarea>
+                    </div>
+
+                    <button type="submit" class="abrirModal" style="background-color: #4a6fa5; color: white; border: none; padding: 0.8rem 1.5rem; border-radius: 5px; cursor: pointer; font-weight: 600;">
+                        Salvar Listão
+                    </button>
+                </form>
+            </div>
+        </div>
     </main>
 
     <script src="{% static 'instsoli/js/scripts.js' %}"></script>

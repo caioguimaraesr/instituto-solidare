@@ -424,7 +424,42 @@ def delete_solicitacao(request, pk):
 ######################## Listão de Aprovados #############################
 def listao_aprovados(request):
     semestres = SemestreAvaliativo.objects.prefetch_related('aprovados').order_by('-codigo')
-    
+    cursos = Curso.objects.all()  # <- Adicionado aqui!
+
     return render(request, 'instsoli/pages/listao_aprovados/listao_aprovados.html', {
-        'semestres': semestres
+        'semestres': semestres,
+        'cursos': cursos  # <- Enviado para o template
     })
+
+def adicionar_listao(request):
+    if request.method == "POST":
+        codigo = request.POST.get('codigo')
+        curso_id = request.POST.get('curso')
+        aprovados_texto = request.POST.get('aprovados')
+
+        if not (codigo and curso_id and aprovados_texto):
+            messages.error(request, "Preencha todos os campos obrigatórios.")
+            return redirect('instsoli:listao_aprovados')
+
+        try:
+            curso = Curso.objects.get(id=curso_id)
+        except Curso.DoesNotExist:
+            messages.error(request, "Curso inválido.")
+            return redirect('instsoli:listao_aprovados')
+
+        # Cria o semestre
+        semestre = SemestreAvaliativo.objects.create(codigo=codigo, curso=curso)
+
+        # Processa a lista de aprovados
+        linhas = aprovados_texto.strip().split("\n")
+        for linha in linhas:
+            partes = linha.strip().split(",")
+            if len(partes) == 2:
+                nome = partes[0].strip()
+                cpf = partes[1].strip()
+                Aprovado.objects.create(nome=nome, cpf=cpf, semestre=semestre)
+
+        messages.success(request, "Listão adicionado com sucesso.")
+        return redirect('instsoli:listao_aprovados')
+
+    return redirect('instsoli:listao_aprovados')

@@ -49,4 +49,5 @@ urlpatterns = [
     
     ### listão de aprovados
     path('listao_aprovados/', views.listao_aprovados, name='listao_aprovados'),
+    path('listao/adicionar/', views.adicionar_listao, name='adicionar_listao'),
 ]
