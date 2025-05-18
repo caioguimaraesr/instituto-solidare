@@ -49,5 +49,7 @@ urlpatterns = [
     
     ### listão de aprovados
     path('listao_aprovados/', views.listao_aprovados, name='listao_aprovados'),
-    path('listao/adicionar/', views.adicionar_listao, name='adicionar_listao'),
+    path('listao_aprovados/adicionar/', views.adicionar_listao, name='adicionar_listao'),
+    path('listao_aprovados/editar/<int:semestre_id>/', views.editar_listao, name='editar_listao'),
+    path('listao_aprovados/excluir/<int:semestre_id>/', views.excluir_listao, name='excluir_listao')
 ]

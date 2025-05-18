@@ -172,6 +172,23 @@
             color: white;
         }
 
+        .btn-editar {   
+            background: transparent;
+            border: none;
+            cursor: pointer;
+            color: #4a6fa5;
+            font-size: 1.4rem;
+            padding: 0.3rem 0.5rem;
+            border-radius: 5px;
+            transition: background-color 0.2s ease, color 0.2s ease;
+            margin-left: 10px;
+        }
+
+        .btn-editar:hover {
+            background-color: #4a6fa5;
+            color: white;
+        }
+
         @media (max-width: 768px) {
             .title-listao {
                 flex-direction: column;
@@ -211,20 +228,69 @@
         <div class="title-listao">
             <i class='bx bxs-graduation'></i>
             <h1>Listão de Aprovados</h1>
+            {% if user.is_superuser %}
             <div class="add-listao">
                 <button class="abrirModal" data-modal-id="modalAdicionarListao">+ Adicionar listão</button>
             </div>
+            {% endif %}
         </div>
 
         <div class="container-listao">
-            {% for semestre in semestres %}
-                <div class="card-listao">
-                    <h1>{{ semestre.curso.nome }} ({{ semestre.codigo }})</h1>
-                    <p><strong>Veja o listão de aprovados no semestre letivo {{ semestre.codigo }}</strong></p>
-                    <button class="abrirModal" data-modal-id="modal-{{ forloop.counter }}">Ver listão</button>
+        {% for semestre in semestres %}
+            <div class="card-listao">
+                <h1>{{ semestre.curso.nome }} ({{ semestre.codigo }})</h1>
+                <p><strong>Veja o listão de aprovados no semestre letivo {{ semestre.codigo }}</strong></p>
+                <button class="abrirModal" data-modal-id="modal-{{ forloop.counter }}">Ver listão</button>
+
+                <!-- Ícone só do lápis --> 
+                {% if user.is_superuser %}
+                <button class="btn-editar abrirModal" aria-label="Editar listão" data-modal-id="modalEditar-{{ forloop.counter }}">
+                    <i class='bx bx-pencil'></i>
+                </button>
+
+                <!-- Botão de excluir (novo) -->
+                <button class="btn-editar" data-semestre-id="{{ semestre.id }}" title="Excluir">
+                    <i class='bx bx-trash'></i>
+                </button>
+                {% endif %}
+            </div>
+
+            <!-- Modal de edição DEVE estar aqui dentro -->
+            <div id="modalEditar-{{ forloop.counter }}" class="modal hidden">
+                <div class="modal-content">
+                    <span class="fecharModal" data-modal-id="modalEditar-{{ forloop.counter }}">&times;</span>
+                    <h2>Editar Listão - {{ semestre.codigo }} | {{ semestre.curso.nome }}</h2>
+
+                    <form method="post" action="{% url 'instsoli:editar_listao' semestre.id %}">
+                        {% csrf_token %}
+                        <div style="margin-bottom: 1rem;">
+                            <label for="codigo">Código do Semestre:</label><br>
+                            <input type="text" name="codigo" value="{{ semestre.codigo }}" required 
+                                style="width: 100%; padding: 8px; border: 1px solid #ccc; border-radius: 5px;">
+                        </div>
+
+                        <div style="margin-bottom: 1rem;">
+                            <label for="curso">Curso:</label><br>
+                            <select name="curso" required style="width: 100%; padding: 8px; border: 1px solid #ccc; border-radius: 5px;">
+                                {% for curso in cursos %}
+                                    <option value="{{ curso.id }}" {% if curso.id == semestre.curso.id %}selected{% endif %}>{{ curso.nome }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+
+                        <div style="margin-bottom: 1rem;">
+                            <label for="aprovados">Aprovados (Nome, CPF - um por linha):</label><br>
+                            <textarea name="aprovados" rows="6" required style="width: 100%; padding: 8px; border: 1px solid #ccc; border-radius: 5px; white-space: pre;">{% for aprovado in semestre.aprovados.all %}{{ aprovado.nome }}, {{ aprovado.cpf }}{% if not forloop.last %}&#10;{% endif %}{% endfor %}</textarea>
+                        </div>
+
+                        <button type="submit" class="abrirModal" style="background-color: #4a6fa5; color: white; border: none; padding: 0.8rem 1.5rem; border-radius: 5px; cursor: pointer; font-weight: 600;">
+                            Salvar Edição
+                        </button>
+                    </form>
                 </div>
-            {% endfor %}
-        </div>
+            </div>
+        {% endfor %}
+    </div>
 
         {% for semestre in semestres %}
             <!-- Modal por semestre -->
@@ -288,6 +354,7 @@
                 </form>
             </div>
         </div>
+
     </main>
 
     <script src="{% static 'instsoli/js/scripts.js' %}"></script>
@@ -310,12 +377,23 @@
                 });
             });
 
-            // Fechar clicando fora do conteúdo
             window.addEventListener("click", function (event) {
                 if (event.target.classList.contains("modal")) {
                     event.target.classList.add("hidden");
                 }
             });
+        });
+        document.addEventListener('click', function(e) {
+            const botao = e.target.closest('.btn-editar[title="Excluir"]');
+            
+            if (botao) {
+                e.preventDefault();
+                const semestreId = botao.getAttribute('data-semestre-id');
+                
+                if (confirm('Tem certeza que deseja excluir este listão? Esta ação é irreversível.')) {
+                    window.location.href = `{% url 'instsoli:excluir_listao' 0 %}`.replace('0', semestreId);
+                }
+            }
         });
     </script>
 </body>
