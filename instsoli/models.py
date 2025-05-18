@@ -1,6 +1,7 @@
 from django.db import models
 from usuario.models import InformacoesPessoais
 from django.contrib.auth.models import User
+from django.core.exceptions import ValidationError
 
 # Create your models here.
 class Curso(models.Model):
@@ -71,6 +72,7 @@ class Solicitacao(models.Model):
     aluno = models.ForeignKey(User, on_delete=models.CASCADE, related_name='solicitacoes_enviadas')
     professor = models.ForeignKey(User, on_delete=models.CASCADE, related_name='solicitacoes_recebidas', null=True, blank=True)
     solucao_resposta = models.TextField(default='')
+    arquivada = models.BooleanField(default=False)
     data_criacao = models.DateTimeField(auto_now_add=True)
     data_atualizacao = models.DateTimeField(auto_now=True)
 
@@ -78,6 +80,17 @@ class Solicitacao(models.Model):
         verbose_name = 'Solicitação'
         verbose_name_plural = 'Solicitações'
         ordering = ['-data_criacao']
+    
+    def arquivar(self):
+        self.arquivada = True
+        self.save()
+
+    def clean(self):
+        if self.pk:
+            old_status = Solicitacao.objects.get(pk=self.pk).status
+            if old_status in ['em_andamento', 'resolvido'] and self.status == 'pendente':
+                raise ValidationError("Não é possível voltar para 'pendente' após o atendimento iniciado.")
+        super().clean()
 
     def __str__(self):
         return f"{self.titulo} - {self.get_status_display()}"

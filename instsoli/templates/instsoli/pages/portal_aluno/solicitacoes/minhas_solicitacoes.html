@@ -185,18 +185,14 @@
             background-color: #c53020;
         }
 
-        /* Status - cores indicativas */
-        [data-status="pendente"] {
-            color: #f6c23e;
-        }
+        [data-status="pendente"] { color: #f6c23e; }
+        [data-status="em_andamento"] { color: #36b9cc; }
+        [data-status="resolvido"] { color: #1cc88a; }
 
-        [data-status="em_andamento"] {
-            color: #36b9cc;
-        }
-
-        [data-status="resolvido"] {
-            color: #1cc88a;
-        }
+        /* Fallback com classes */
+        .status-pendente { color: #f6c23e; }
+        .status-em_andamento { color: #36b9cc; }
+        .status-resolvido { color: #1cc88a; }
 
         /* Solução completa */
         .solucao-completa {
@@ -246,7 +242,6 @@
                 <button id="btnNovaSolicitacao" class="btn btn-primary">+ Nova Solicitação</button>
             </div>
 
-            <!-- ÚNICA TABELA PARA TODAS AS SOLICITAÇÕES -->
             <table class="tabela-solicitacoes">
                 <thead>
                     <tr>
@@ -254,35 +249,41 @@
                         <th>Tipo</th>
                         <th>Status</th>
                         <th>Data</th>
+                        <th>Responsável</th>
                         <th>Ações/Solução</th>
                     </tr>
                 </thead>
                 <tbody>
-                    {% for solicitacao in solicitacoes %}
-                    <tr data-id="{{ solicitacao.id }}">
-                        <td>{{ solicitacao.titulo }}</td>
-                        <td>{{ solicitacao.get_tipo_display }}</td>
-                        <td data-status="{{ solicitacao.status }}">{{ solicitacao.get_status_display }}</td>
-                        <td>{{ solicitacao.data_criacao|date:"d/m/Y H:i" }}</td>
-                        <td>
-                            {% if solicitacao.status == 'resolvido' %}
-                                <button class="btn-ver-solucao" onclick="abrirModalSolucao('{{ solicitacao.solucao_resposta|escapejs }}')">
-                                    Ver solução
-                                </button>
-                            {% else %}
-                                <button class="btn-editar" data-id="{{ solicitacao.id }}">
-                                    <i class='bx bx-edit'></i>
-                                </button>
-                                <button class="btn-deletar" data-id="{{ solicitacao.id }}">
-                                    <i class='bx bx-trash'></i>
-                                </button>
-                            {% endif %}
-                        </td>
-                    </tr>
-                    {% empty %}
-                    <tr><td colspan="5">Nenhuma solicitação encontrada.</td></tr>
-                    {% endfor %}
-                </tbody>
+                {% for solicitacao in solicitacoes %}
+                <tr data-id="{{ solicitacao.id }}">
+                    <td>{{ solicitacao.titulo }}</td>
+                    <td>{{ solicitacao.get_tipo_display }}</td>
+                    <td data-status="{{ solicitacao.status }}" 
+                        style="font-weight: bold;"
+                        class="status-{{ solicitacao.status }}">
+                        {{ solicitacao.get_status_display }}
+                    </td>
+                    <td>{{ solicitacao.data_criacao|date:"d/m/Y H:i" }}</td>
+                    <td>{{ solicitacao.professor|default:"Não capturado"}}</td>
+                    <td>              
+                        {% if solicitacao.solucao_resposta or solicitacao.status == 'em_andamento' or solicitacao.status == 'resolvido'%}
+                            <button class="btn-ver-solucao" {% if solicitacao.solucao_resposta %} onclick="abrirModalSolucao('{{ solicitacao.solucao_resposta|escapejs }}')" {% else %} onclick="abrirModalSolucao('Aguardando a sua resposta...')" {% endif %}>
+                                Ver solução
+                            </button>
+                        {% else %}
+                            <button class="btn-editar" data-id="{{ solicitacao.id }}">
+                                <i class='bx bx-edit'></i>
+                            </button>
+                            <button class="btn-deletar" data-id="{{ solicitacao.id }}">
+                                <i class='bx bx-trash'></i>
+                            </button>
+                        {% endif %}
+                    </td>
+                </tr>
+                {% empty %}
+                <tr><td colspan="5">Nenhuma solicitação encontrada.</td></tr>
+                {% endfor %}
+            </tbody>
             </table>
         </section>
 
@@ -338,7 +339,7 @@
                 </form>
             </div>
         </div>
-
+        
         <!-- Modal Solução -->
         <div id="modalSolucao" class="modal">
             <div class="modal-content">
@@ -353,12 +354,12 @@
     <script>
         const abrirModal = (id) => {
             document.getElementById(id).style.display = 'block';
-            document.body.style.overflow = 'hidden'; // Impede scroll da página principal
+            document.body.style.overflow = 'hidden';
         };
 
         const fecharModal = (id) => {
             document.getElementById(id).style.display = 'none';
-            document.body.style.overflow = 'auto'; // Restaura scroll da página principal
+            document.body.style.overflow = 'auto';
         };
 
         // Fechar modal ao clicar fora do conteúdo

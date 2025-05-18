@@ -270,12 +270,19 @@ def excluir_aviso(request, aviso_id):
 # solicitacoes professor
 @login_required
 def professor_solicitacoes(request):
-    solicitacoes = Solicitacao.objects.all()
+    solicitacoes = Solicitacao.objects.filter(arquivada=False)
     return render(request, 'instsoli/pages/portal_professor/solicitacoes/solicitacoes_professor.html', {
         'solicitacoes': solicitacoes
     })
 
-# Atualizar status e resposta de uma solicitação
+@login_required
+def arquivar_solicitacao(request, id):
+    solicitacao = get_object_or_404(Solicitacao, id=id)
+    if request.method == 'POST':
+        solicitacao.arquivar()
+        return JsonResponse({'success': True})
+    return JsonResponse({'success': False}, status=400)
+
 @login_required
 def atualizar_solicitacao(request, id):
     solicitacao = get_object_or_404(Solicitacao, id=id)
@@ -291,7 +298,6 @@ def atualizar_solicitacao(request, id):
 
         return redirect('instsoli:professor_solicitacoes')
     
-    # Se GET, retorna JSON para preencher modal
     if request.headers.get('x-requested-with') == 'XMLHttpRequest':
         return JsonResponse({
             'id': solicitacao.id,
@@ -312,7 +318,6 @@ def capturar_solicitacao(request, id):
     
     if request.method == 'POST':
         if solicitacao.status == 'pendente':
-            # Atualiza o status e associa o professor
             solicitacao.status = 'em_andamento'
             solicitacao.professor = request.user
             solicitacao.save()
@@ -322,7 +327,6 @@ def capturar_solicitacao(request, id):
                 'message': 'Solicitação capturada com sucesso!'
             })
         else:
-            # Verifica se já foi capturada por outro professor
             if solicitacao.professor and solicitacao.professor != request.user:
                 return JsonResponse({
                     'success': False,
@@ -336,18 +340,18 @@ def capturar_solicitacao(request, id):
 
     return redirect('instsoli:professor_solicitacoes')
 
-
 ### portal do aluno
 def portal_aluno(request):
     return render(request, 'instsoli/pages/portal_aluno/portal_aluno.html')
 
+# avisos aluno 
 def avisos_aluno(request):
     avisos = Aviso.objects.all().order_by('-data_criacao')
     return render(request, 'instsoli/pages/portal_aluno/avisos/avisos_aluno.html', context={
         'avisos': avisos
     })
 
-# solicitacoes
+# solicitacoes aluno
 @login_required
 def list_solicitacoes(request):
     solicitacoes = Solicitacao.objects.filter(aluno=request.user)
