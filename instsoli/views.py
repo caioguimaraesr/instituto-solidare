@@ -160,7 +160,6 @@ def editar_turma(request, id):
 
 @login_required(login_url='usuario:login')
 @user_passes_test(is_admin, login_url='instsoli:home')
-@user_passes_test(is_admin)
 def excluir_turma(request, id):
     turma = get_object_or_404(Turma, id=id)
     turma.delete()
@@ -215,12 +214,16 @@ def registrar_frequencia(request, id):
     })
 
 # avisos professor
+@user_passes_test(is_admin, login_url='instsoli:home')
+@login_required(login_url='usuario:login')
 def avisos(request):
     avisos = Aviso.objects.filter(professor=request.user).order_by('-data_criacao')
     return render(request, 'instsoli/pages/portal_professor/avisos/avisos.html', context={
         'avisos': avisos
     })
 
+@user_passes_test(is_admin, login_url='instsoli:home')
+@login_required(login_url='usuario:login')
 def criar_aviso(request):
     if request.method == 'POST':
         titulo = request.POST.get('titulo')
@@ -235,6 +238,8 @@ def criar_aviso(request):
         )
         return redirect('instsoli:avisos')
 
+@user_passes_test(is_admin, login_url='instsoli:home')
+@login_required(login_url='usuario:login')
 def editar_aviso(request, aviso_id):
     aviso = get_object_or_404(Aviso, id=aviso_id, professor=request.user)
 
@@ -251,7 +256,8 @@ def editar_aviso(request, aviso_id):
 
     return render(request, 'editar_aviso.html', {'aviso': aviso})
 
-@login_required
+@user_passes_test(is_admin, login_url='instsoli:home')
+@login_required(login_url='usuario:login')
 def get_aviso_data(request, aviso_id):
     aviso = get_object_or_404(Aviso, id=aviso_id, professor=request.user)
     data = {
@@ -261,29 +267,40 @@ def get_aviso_data(request, aviso_id):
     }
     return JsonResponse(data)
 
-@login_required
+@user_passes_test(is_admin, login_url='instsoli:home')
+@login_required(login_url='usuario:login')
 def excluir_aviso(request, aviso_id):
     aviso = get_object_or_404(Aviso, id=aviso_id, professor=request.user)
     aviso.delete()
     return redirect('instsoli:avisos')
 
 # solicitacoes professor
-@login_required
+@user_passes_test(is_admin, login_url='instsoli:home')
+@login_required(login_url='usuario:login')
 def professor_solicitacoes(request):
     solicitacoes = Solicitacao.objects.filter(arquivada=False)
     return render(request, 'instsoli/pages/portal_professor/solicitacoes/solicitacoes_professor.html', {
         'solicitacoes': solicitacoes
     })
 
-@login_required
+@user_passes_test(is_admin, login_url='instsoli:home')
+@login_required(login_url='usuario:login')
 def arquivar_solicitacao(request, id):
     solicitacao = get_object_or_404(Solicitacao, id=id)
     if request.method == 'POST':
         solicitacao.arquivar()
-        return JsonResponse({'success': True})
-    return JsonResponse({'success': False}, status=400)
+        return JsonResponse({
+            'success': True,
+            'message': 'Solicitação arquivada com sucesso!'
+        })
+    
+    return JsonResponse({
+        'success': False,
+        'message': 'Método não permitido'
+    }, status=400)
 
-@login_required
+@user_passes_test(is_admin, login_url='instsoli:home')
+@login_required(login_url='usuario:login')
 def atualizar_solicitacao(request, id):
     solicitacao = get_object_or_404(Solicitacao, id=id)
     
@@ -312,7 +329,8 @@ def atualizar_solicitacao(request, id):
 
     return redirect('instsoli:professor_solicitacoes')
 
-@login_required
+@user_passes_test(is_admin, login_url='instsoli:home')
+@login_required(login_url='usuario:login')
 def capturar_solicitacao(request, id):
     solicitacao = get_object_or_404(Solicitacao, id=id)
     
@@ -341,10 +359,12 @@ def capturar_solicitacao(request, id):
     return redirect('instsoli:professor_solicitacoes')
 
 ### portal do aluno
+@login_required(login_url='usuario:login')
 def portal_aluno(request):
     return render(request, 'instsoli/pages/portal_aluno/portal_aluno.html')
 
-# avisos aluno 
+# avisos aluno
+@login_required(login_url='usuario:login')
 def avisos_aluno(request):
     avisos = Aviso.objects.all().order_by('-data_criacao')
     return render(request, 'instsoli/pages/portal_aluno/avisos/avisos_aluno.html', context={
@@ -352,14 +372,14 @@ def avisos_aluno(request):
     })
 
 # solicitacoes aluno
-@login_required
+@login_required(login_url='usuario:login')
 def list_solicitacoes(request):
     solicitacoes = Solicitacao.objects.filter(aluno=request.user)
     return render(request, 'instsoli/pages/portal_aluno/solicitacoes/minhas_solicitacoes.html', context={
         'solicitacoes': solicitacoes
     })
 
-@login_required
+@login_required(login_url='usuario:login')
 def create_solicitacao(request):
     titulo = request.POST.get('titulo')
     mensagem = request.POST.get('mensagem')
@@ -374,7 +394,7 @@ def create_solicitacao(request):
     return redirect('instsoli:listar_solicitacoes')
 
 
-@login_required
+@login_required(login_url='usuario:login')
 def edit_solicitacao(request, pk):
     solicitacao = get_object_or_404(Solicitacao, pk=pk)
 
@@ -394,7 +414,7 @@ def edit_solicitacao(request, pk):
         return redirect('instsoli:listar_solicitacoes')
 
 
-@login_required
+@login_required(login_url='usuario:login')
 def delete_solicitacao(request, pk):
     solicitacao = get_object_or_404(Solicitacao, pk=pk)
 

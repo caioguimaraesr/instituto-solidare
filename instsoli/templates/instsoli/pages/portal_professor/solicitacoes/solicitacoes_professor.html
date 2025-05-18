@@ -372,6 +372,43 @@
             });
         });
 
+        document.querySelectorAll('.btn-arquivar').forEach(btn => {
+        btn.addEventListener('click', async (e) => {
+            e.stopPropagation();
+            const id = btn.dataset.id;
+            const row = btn.closest('tr');
+            
+            if(confirm('Deseja arquivar esta solicitação?')) {
+                try {
+                    const response = await fetch(`/portal_professor/arquivar_solicitacao/${id}/`, {
+                        method: 'POST',
+                        headers: {
+                            'X-Requested-With': 'XMLHttpRequest',
+                            'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]').value
+                        }
+                    });
+
+                    if (!response.ok) {
+                        const errorData = await response.json();
+                        throw new Error(errorData.message || 'Erro ao arquivar solicitação');
+                    }
+
+                    const data = await response.json();
+                    
+                    if(data.success) {
+                        row.remove();
+                        alert(data.message);
+                    } else {
+                        throw new Error(data.message || 'Erro ao arquivar solicitação');
+                    }
+                } catch (error) {
+                    console.error('Error:', error);
+                    alert(error.message);
+                }
+            }
+        });
+    });
+
         document.querySelectorAll('.btn-editar').forEach(btn => {
             btn.addEventListener('click', async () => {
                 const id = btn.dataset.id;

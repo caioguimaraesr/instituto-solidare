@@ -17,30 +17,15 @@
         <section style="display: flex; flex-wrap: wrap; gap: 20px;">
             
             <!-- Card 1 -->
-            <div class="card">
-                <i class='bx bx-bell icon'></i>
-                <h3>Avisos</h3>
-                <p>Veja os principais avisos dos professores</p>
-                <a href="{% url "instsoli:avisos_aluno" %}">Acessar</a>
-            </div>
-
-            <!-- Card 2 -->
+            
             <div class="card">
                 <i class='bx bxs-notepad icon'></i>
-                <h3>Gerenciar horários</h3>
-                <p>Gerencie os horários das turmas em andamento</p>
+                <h3>Horários</h3>
+                <p>Acesse os horários das turmas</p>
                 <a href="#">Acessar</a>
             </div>
 
             <!-- Card 3 -->
-            <div class="card">
-                <i class='bx bx-pencil icon'></i>
-                <h3>Solicitações dos alunos</h3>
-                <p>Solucione os problemas dos alunos</p>
-                <a href="{% url "instsoli:listar_solicitacoes" %}">Acessar</a>
-            </div>
-
-            <!-- Card 4 -->
             <div class="card">
                 <i class='bx bxs-book-alt icon'></i>
                 <h3>Materiais Didáticos</h3>
@@ -48,13 +33,14 @@
                 <a href="#">Acessar</a>
             </div>
             
-            <!-- Card 5 -->
+            <!-- Card 4 -->
             <div class="card">
-                <i class='bx bxs-chalkboard icon'></i>
-                <h3>Turmas Atribuídas</h3>
-                <p>Visualize suas turmas e alunos matriculados.</p>
-                <a href="{% url "instsoli:gerenciar_turmas" %}">Acessar</a>
+                <i class='bx bx-bell icon'></i>
+                <h3>Avisos</h3>
+                <p>Veja os principais avisos dos professores</p>
+                <a href="{% url "instsoli:avisos_aluno" %}">Acessar</a>
             </div>
+
 
         </section>
     </main>
