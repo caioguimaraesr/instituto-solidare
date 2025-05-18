@@ -267,6 +267,76 @@ def excluir_aviso(request, aviso_id):
     aviso.delete()
     return redirect('instsoli:avisos')
 
+# solicitacoes professor
+@login_required
+def professor_solicitacoes(request):
+    solicitacoes = Solicitacao.objects.all()
+    return render(request, 'instsoli/pages/portal_professor/solicitacoes/solicitacoes_professor.html', {
+        'solicitacoes': solicitacoes
+    })
+
+# Atualizar status e resposta de uma solicitação
+@login_required
+def atualizar_solicitacao(request, id):
+    solicitacao = get_object_or_404(Solicitacao, id=id)
+    
+    if request.method == 'POST':
+        novo_status = request.POST.get('status')
+        resposta = request.POST.get('solucao_resposta')
+
+        solicitacao.status = novo_status
+        solicitacao.solucao_resposta = resposta
+        solicitacao.professor = request.user
+        solicitacao.save()
+
+        return redirect('instsoli:professor_solicitacoes')
+    
+    # Se GET, retorna JSON para preencher modal
+    if request.headers.get('x-requested-with') == 'XMLHttpRequest':
+        return JsonResponse({
+            'id': solicitacao.id,
+            'status': solicitacao.status,
+            'solucao_resposta': solicitacao.solucao_resposta,
+            'titulo': solicitacao.titulo,
+            'mensagem': solicitacao.mensagem,
+            'tipo': solicitacao.tipo,
+            'aluno': solicitacao.aluno.username,
+            'data': solicitacao.data_criacao.strftime('%d/%m/%Y %H:%M')
+        })
+
+    return redirect('instsoli:professor_solicitacoes')
+
+@login_required
+def capturar_solicitacao(request, id):
+    solicitacao = get_object_or_404(Solicitacao, id=id)
+    
+    if request.method == 'POST':
+        if solicitacao.status == 'pendente':
+            # Atualiza o status e associa o professor
+            solicitacao.status = 'em_andamento'
+            solicitacao.professor = request.user
+            solicitacao.save()
+            
+            return JsonResponse({
+                'success': True,
+                'message': 'Solicitação capturada com sucesso!'
+            })
+        else:
+            # Verifica se já foi capturada por outro professor
+            if solicitacao.professor and solicitacao.professor != request.user:
+                return JsonResponse({
+                    'success': False,
+                    'message': f'Esta solicitação já está sendo tratada pelo professor {solicitacao.professor.get_full_name()}'
+                }, status=400)
+            else:
+                return JsonResponse({
+                    'success': False,
+                    'message': 'Esta solicitação já está em andamento'
+                }, status=400)
+
+    return redirect('instsoli:professor_solicitacoes')
+
+
 ### portal do aluno
 def portal_aluno(request):
     return render(request, 'instsoli/pages/portal_aluno/portal_aluno.html')
@@ -278,15 +348,6 @@ def avisos_aluno(request):
     })
 
 # solicitacoes
-from django.shortcuts import render, get_object_or_404, redirect
-from django.http import JsonResponse, HttpResponseForbidden
-from django.contrib.auth.decorators import login_required
-from django.views.decorators.http import require_http_methods
-from .models import Solicitacao
-
-from django.contrib.auth.decorators import login_required
-from .models import Solicitacao
-
 @login_required
 def list_solicitacoes(request):
     solicitacoes = Solicitacao.objects.filter(aluno=request.user)
@@ -295,7 +356,6 @@ def list_solicitacoes(request):
     })
 
 @login_required
-@require_http_methods(["POST"])
 def create_solicitacao(request):
     titulo = request.POST.get('titulo')
     mensagem = request.POST.get('mensagem')
@@ -314,9 +374,6 @@ def create_solicitacao(request):
 def edit_solicitacao(request, pk):
     solicitacao = get_object_or_404(Solicitacao, pk=pk)
 
-    if solicitacao.professor != request.user and solicitacao.aluno != request.user:
-        return HttpResponseForbidden()
-
     if request.method == 'GET':
         return JsonResponse({
             'titulo': solicitacao.titulo,
@@ -334,12 +391,8 @@ def edit_solicitacao(request, pk):
 
 
 @login_required
-@require_http_methods(["POST"])
 def delete_solicitacao(request, pk):
     solicitacao = get_object_or_404(Solicitacao, pk=pk)
-
-    if solicitacao.professor != request.user and solicitacao.aluno != request.user:
-        return HttpResponseForbidden()
 
     solicitacao.delete()
     return redirect('instsoli:listar_solicitacoes')

@@ -1,0 +1,374 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bloom | Portal do Professor</title>
+    <link rel="stylesheet" href="{% static 'instsoli/css/style.css' %}">
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <style>
+        /* Estilos para a seção de solicitações */
+        .solicitacoes {
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+        }
+
+        .header {
+            margin-bottom: 20px;
+        }
+
+        .header h1 {
+            color: #333;
+            font-size: 24px;
+            margin: 0;
+        }
+
+        /* Estilos para a tabela */
+        .tabela-solicitacoes {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .tabela-solicitacoes th,
+        .tabela-solicitacoes td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .tabela-solicitacoes th {
+            background-color: #f8f9fa;
+            color: #333;
+            font-weight: 600;
+        }
+
+        .tabela-solicitacoes tbody tr:hover {
+            background-color: #f9f9f9;
+        }
+
+        /* Estilos para os status */
+        td[data-status="pendente"] {
+            color: #ff9800;
+            font-weight: 500;
+        }
+
+        td[data-status="em_andamento"] {
+            color: #2196f3;
+            font-weight: 500;
+        }
+
+        td[data-status="resolvido"] {
+            color: #4caf50;
+            font-weight: 500;
+        }
+
+        /* Estilos para os botões */
+        .btn-editar {
+            background-color: transparent;
+            border: none;
+            color: #555;
+            cursor: pointer;
+            font-size: 18px;
+            transition: color 0.3s;
+        }
+
+        .btn-editar:hover {
+            color: #2196f3;
+        }
+
+        /* NOVO: Estilos para o botão Capturar */
+        .btn-capturar {
+            background-color: #2196f3;
+            color: white;
+            border: none;
+            padding: 6px 12px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+            margin-right: 8px;
+            transition: background-color 0.3s;
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .btn-capturar:hover {
+            background-color: #0d8bf2;
+        }
+
+        .btn-capturar i {
+            font-size: 16px;
+        }
+
+        /* Estilos para o modal */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+        }
+
+        .btn-capturar.disabled {
+            background-color: #cccccc;
+            cursor: not-allowed;
+        }
+
+        /* Estilo para quando é o professor responsável */
+        .btn-capturar.continuar {
+            background-color: #4caf50;
+        }
+
+        .modal-content {
+            background-color: white;
+            margin: 5% auto;
+            padding: 25px;
+            border-radius: 8px;
+            width: 50%;
+            max-width: 600px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+        }
+
+        .modal h2 {
+            margin-top: 0;
+            color: #333;
+        }
+
+        .close {
+            float: right;
+            font-size: 24px;
+            font-weight: bold;
+            color: #aaa;
+            cursor: pointer;
+        }
+
+        .close:hover {
+            color: #333;
+        }
+
+        /* Estilos para o formulário no modal */
+        #formResponder {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        #formResponder input,
+        #formResponder select,
+        #formResponder textarea {
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 14px;
+        }
+
+        #formResponder input:disabled,
+        #formResponder textarea:disabled {
+            background-color: #f5f5f5;
+        }
+
+        #formResponder textarea {
+            min-height: 100px;
+            resize: vertical;
+        }
+
+        #formResponder label {
+            font-weight: 500;
+            color: #555;
+        }
+
+        #formResponder .btn {
+            background-color: #4caf50;
+            color: white;
+            border: none;
+            padding: 12px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s;
+        }
+
+        #formResponder .btn:hover {
+            background-color: #3d8b40;
+        }
+
+        /* Responsividade */
+        @media (max-width: 768px) {
+            .main-content {
+                margin-left: 0;
+                padding: 15px;
+            }
+
+            .modal-content {
+                width: 90%;
+                margin: 10% auto;
+            }
+        }
+    </style>
+</head>
+<body>
+    {% include "instsoli/partials/sidebar.html" %}
+
+    <main class="main-content">
+        <section class="solicitacoes">
+            <div class="header">
+                <h1>Solicitações dos Alunos</h1>
+            </div>
+
+            <table class="tabela-solicitacoes">
+                <thead>
+                    <tr>
+                        <th>Título</th>
+                        <th>Aluno</th>
+                        <th>Tipo</th>
+                        <th>Status</th>
+                        <th>Professor Responsável</th>  <!-- Nova coluna -->
+                        <th>Data</th>
+                        <th>Ações</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for solicitacao in solicitacoes %}
+                    <tr data-id="{{ solicitacao.id }}">
+                        <td>{{ solicitacao.titulo }}</td>
+                        <td>{{ solicitacao.aluno.get_full_name }}</td>
+                        <td>{{ solicitacao.get_tipo_display }}</td>
+                        <td data-status="{{ solicitacao.status }}">{{ solicitacao.get_status_display }}</td>
+                        <td>{{ solicitacao.professor.username|default:"-" }}</td>
+                        <td>{{ solicitacao.data_criacao|date:"d/m/Y H:i" }}</td>
+                        <td>
+                            {% if solicitacao.status == 'pendente'%}
+                                <button class="btn-capturar" data-id="{{ solicitacao.id }}">
+                                    <i class='bx bx-check'></i>Capturar
+                                </button>
+                            {% endif %}
+                            <button class="btn-editar" data-id="{{ solicitacao.id }}">
+                                <i class='bx bx-edit'></i>
+                            </button>
+                        </td>
+                    </tr>
+                    {% empty %}
+                    <tr><td colspan="7">Nenhuma solicitação encontrada.</td></tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </section>
+
+        <!-- Modal de Responder Solicitação -->
+        <div id="modalResponder" class="modal">
+            <div class="modal-content">
+                <span class="close" onclick="fecharModal('modalResponder')">&times;</span>
+                <h2>Responder Solicitação</h2>
+                <form id="formResponder" method="post">
+                    {% csrf_token %}
+                    <input type="text" id="responderTitulo" disabled>
+                    <textarea id="responderMensagem" disabled></textarea>
+                    
+                    <label for="status">Status</label>
+                    <select name="status" id="responderStatus" required>
+                        <option value="pendente">Pendente</option>
+                        <option value="em_andamento">Em Andamento</option>
+                        <option value="resolvido">Resolvido</option>
+                    </select>
+
+                    <label for="solucao_resposta">Resposta/Solução</label>
+                    <textarea name="solucao_resposta" id="responderSolucao" required></textarea>
+
+                    <button type="submit" class="btn">Salvar Resposta</button>
+                </form>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        const abrirModal = (id) => document.getElementById(id).style.display = 'block';
+        const fecharModal = (id) => document.getElementById(id).style.display = 'none';
+
+        // Função para capturar solicitação
+        document.querySelectorAll('.btn-capturar').forEach(btn => {
+            btn.addEventListener('click', async (e) => {
+                e.stopPropagation();
+                const id = btn.dataset.id;
+                const row = btn.closest('tr'); // Encontra a linha da tabela
+                
+                if(confirm('Deseja capturar esta solicitação para responder?')) {
+                    try {
+                        const response = await fetch(`/portal_professor/capturar_solicitacao/${id}/`, {
+                            method: 'POST',
+                            headers: {
+                                'X-Requested-With': 'XMLHttpRequest',
+                                'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]').value
+                            }
+                        });
+
+                        if (!response.ok) {
+                            const errorData = await response.json();
+                            throw new Error(errorData.message || 'Erro ao capturar solicitação');
+                        }
+
+                        const data = await response.json();
+                        
+                        if(data.success) {
+                            // Atualiza a interface sem recarregar a página
+                            btn.style.display = 'none'; // Esconde o botão de captura
+                            
+                            // Atualiza o status na tabela
+                            const statusCell = row.querySelector('td[data-status]');
+                            statusCell.textContent = 'Em Andamento';
+                            statusCell.setAttribute('data-status', 'em_andamento');
+                            statusCell.style.color = '#2196f3';
+                            statusCell.style.fontWeight = '500';
+                            
+                            // Atualiza o professor responsável
+                            const professorCell = row.querySelector('td:nth-child(5)');
+                            professorCell.textContent = '{{ request.user.username }}';
+                            
+                            alert(data.message);
+                        } else {
+                            throw new Error(data.message || 'Erro ao capturar solicitação');
+                        }
+                    } catch (error) {
+                        console.error('Error:', error);
+                        alert(error.message);
+                    }
+                }
+            });
+        });
+
+        // Editar / Responder (mantido igual)
+        document.querySelectorAll('.btn-editar').forEach(btn => {
+            btn.addEventListener('click', async () => {
+                const id = btn.dataset.id;
+                try {
+                    const response = await fetch(`/portal_professor/atualizar_solicitacao/${id}/`, {
+                        headers: {
+                            'X-Requested-With': 'XMLHttpRequest'
+                        }
+                    });
+                    
+                    if (!response.ok) {
+                        throw new Error('Erro ao carregar dados da solicitação');
+                    }
+
+                    const data = await response.json();
+                    document.getElementById('formResponder').action = `/portal_professor/atualizar_solicitacao/${id}/`;
+                    document.getElementById('responderTitulo').value = data.titulo;
+                    document.getElementById('responderMensagem').value = data.mensagem;
+                    document.getElementById('responderStatus').value = data.status;
+                    document.getElementById('responderSolucao').value = data.solucao_resposta || '';
+                    abrirModal('modalResponder');
+                } catch (error) {
+                    console.error('Error:', error);
+                    alert(error.message);
+                }
+            });
+        });
+    </script>
+</body>
+</html>
