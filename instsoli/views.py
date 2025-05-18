@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required, user_passes_test
-from .models import Curso,Turma, Frequencia, Aviso, Solicitacao
+from .models import Curso,Turma, Frequencia, Aviso, Solicitacao, SemestreAvaliativo, Aprovado
 from usuario.models import InformacoesPessoais
 from django.shortcuts import render, get_object_or_404
 from django.contrib import messages
@@ -420,3 +420,11 @@ def delete_solicitacao(request, pk):
 
     solicitacao.delete()
     return redirect('instsoli:listar_solicitacoes')
+
+######################## Listão de Aprovados #############################
+def listao_aprovados(request):
+    semestres = SemestreAvaliativo.objects.prefetch_related('aprovados').order_by('-codigo')
+    
+    return render(request, 'instsoli/pages/listao_aprovados/listao_aprovados.html', {
+        'semestres': semestres
+    })

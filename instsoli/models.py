@@ -94,3 +94,36 @@ class Solicitacao(models.Model):
 
     def __str__(self):
         return f"{self.titulo} - {self.get_status_display()}"
+    
+class SemestreAvaliativo(models.Model):
+    codigo = models.CharField(max_length=10, unique=True)
+    curso = models.ForeignKey(
+        Curso,
+        on_delete=models.CASCADE,
+        related_name='semestres',
+        null=True 
+    )
+
+    def __str__(self):
+        return f"{self.codigo} - {self.curso.nome if self.curso else 'Sem curso'}"
+
+class Aprovado(models.Model):
+    nome = models.CharField(max_length=100)
+    cpf = models.CharField(max_length=14)  # Armazenado como "000.000.000-00"
+    semestre = models.ForeignKey(
+        SemestreAvaliativo,
+        on_delete=models.CASCADE,
+        related_name='aprovados'
+    )
+
+    def cpf_mascarado(self):
+        """
+        Exibe apenas os 3 dígitos centrais do CPF.
+        Ex: ***.456.***-**
+        """
+        if len(self.cpf) == 14:
+            return f"***.{self.cpf[4:7]}.***-**"
+        return "CPF inválido"
+
+    def __str__(self):
+        return f"{self.nome} ({self.semestre.codigo})"

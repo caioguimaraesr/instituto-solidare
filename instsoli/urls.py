@@ -47,4 +47,6 @@ urlpatterns = [
     path('portal_aluno/editar_solicitacoes/<int:pk>/', views.edit_solicitacao, name='editar_solicitacoes'),
     path('portal_aluno/deletar_solicitacoes/<int:pk>/', views.delete_solicitacao, name='deletar_solicitacoes'),
     
+    ### listão de aprovados
+    path('listao_aprovados/', views.listao_aprovados, name='listao_aprovados'),
 ]

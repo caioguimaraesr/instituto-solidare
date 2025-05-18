@@ -10,13 +10,282 @@
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
 </head>
 <body>
-    {% include "instsoli/partials/sidebar.html" %}
+    <style>
+        h1 {
+            color: #4a6fa5;
+            margin-bottom: 2rem;
+            font-size: 2rem;
+            border-bottom: 2px solid #e1e5ee;
+            padding-bottom: 0.5rem;
+        }
 
+        /* Container dos cards */
+        .container-listao {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+
+        /* Cards estilizados */
+        .card-listao {
+            background: white;
+            border-radius: 10px;
+            padding: 1.5rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .card-listao:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .card-listao h1 {
+            color: #4a6fa5;
+            font-size: 1.3rem;
+            margin-top: 0;
+            border-bottom: none;
+            padding-bottom: 0;
+        }
+
+        .card-listao p {
+            color: #555;
+            margin: 0.8rem 0;
+            line-height: 1.5;
+        }
+
+        .card-listao p strong {
+            color: #333;
+        }
+
+        /* Botões */
+        .abrirModal {
+            background-color: #4a6fa5;
+            color: white;
+            border: none;
+            padding: 0.8rem 1.5rem;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: 600;
+            margin-top: 1rem;
+            transition: background-color 0.3s ease;
+        }
+
+        .abrirModal:hover {
+            background-color: #3a5a80;
+        }
+
+        /* Modais */
+        .modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+
+        .modal.hidden {
+            display: none;
+        }
+
+        .modal-content {
+            background-color: white;
+            padding: 2rem;
+            border-radius: 10px;
+            width: 80%;
+            max-width: 800px;
+            max-height: 80vh;
+            overflow-y: auto;
+            position: relative;
+        }
+
+        .fecharModal {
+            position: absolute;
+            top: 1rem;
+            right: 1.5rem;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: #888;
+        }
+
+        .fecharModal:hover {
+            color: #333;
+        }
+
+        /* Tabelas */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 1.5rem;
+        }
+
+        th, td {
+            padding: 0.8rem;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        th {
+            background-color: #f8f9fa;
+            color: #4a6fa5;
+            font-weight: 600;
+        }
+
+        tr:hover {
+            background-color: #f5f7fa;
+        }
+
+        .title-listao {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 30px;
+            padding: 15px 20px;
+            background: linear-gradient(135deg, rgba(74, 111, 165, 0.1) 0%, rgba(107, 140, 206, 0.1) 100%);
+            border-radius: 12px;
+            border-left: 5px solid #4a6fa5;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+        }
+
+        .title-listao i {
+            font-size: 2.5rem;
+            color: #4a6fa5;
+            background-color: white;
+            padding: 12px;
+            border-radius: 50%;
+            box-shadow: 0 2px 8px rgba(74, 111, 165, 0.2);
+        }
+
+        .title-listao h1 {
+            margin: 0;
+            font-size: 1.8rem;
+            color: #2c3e50;
+            font-weight: 600;
+            letter-spacing: -0.5px;
+            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+            border-bottom: none; /* LINHA QUE RESOLVE O PROBLEMA */
+            padding-bottom: 0; /* Remove o espaçamento extra também */
+        }
+
+        .title-listao.alt h1 {
+            color: white;
+        }
+
+        /* Responsivo */
+        @media (max-width: 768px) {
+            .title-listao {
+                flex-direction: column;
+                text-align: center;
+                gap: 10px;
+                padding: 20px 15px;
+            }
+            
+            .title-listao i {
+                font-size: 2rem;
+                padding: 10px;
+            }
+            
+            .title-listao h1 {
+                font-size: 1.5rem;
+            }
+        }
+
+        /* Responsividade */
+        @media (max-width: 768px) {
+            main {
+                margin-left: 0;
+                padding: 1rem;
+            }
+            
+            .container-listao {
+                grid-template-columns: 1fr;
+            }
+            
+            .modal-content {
+                width: 95%;
+                padding: 1rem;
+            }
+        }
+    </style>
+    {% include "instsoli/partials/sidebar.html" %}
     <main>
-        
+        <div class="title-listao">
+            <i class='bx bxs-graduation'></i>
+            <h1>Listão de Aprovados</h1>
+        </div>
+
+        <div class="container-listao">
+            {% for semestre in semestres %}
+                <div class="card-listao">
+                    <h1>{{ semestre.curso.nome }} ({{ semestre.codigo }})</h1>
+                    <p><strong>Veja o listão de aprovados no semestre letivo {{ semestre.codigo }}</strong></p>
+                    <button class="abrirModal" data-modal-id="modal-{{ forloop.counter }}">Ver listão</button>
+                </div>
+            {% endfor %}
+        </div>
+
+        {% for semestre in semestres %}
+            <!-- Modal por semestre -->
+            <div id="modal-{{ forloop.counter }}" class="modal hidden">
+                <div class="modal-content">
+                    <span class="fecharModal close" data-modal-id="modal-{{ forloop.counter }}">&times;</span>
+                    <h2>Aprovados - {{ semestre.codigo }} | {{ semestre.curso.nome }}</h2>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Nome</th>
+                                <th>CPF</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for aprovado in semestre.aprovados.all %}
+                                <tr>
+                                    <td>{{ aprovado.nome }}</td>
+                                    <td>{{ aprovado.cpf_mascarado }}</td>
+                                </tr>
+                            {% empty %}
+                                <tr><td colspan="2">Nenhum aprovado encontrado.</td></tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        {% endfor %}
     </main>
 
     <script src="{% static 'instsoli/js/scripts.js' %}"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const botoesAbrir = document.querySelectorAll(".abrirModal");
+            const botoesFechar = document.querySelectorAll(".fecharModal");
+
+            botoesAbrir.forEach(botao => {
+                botao.addEventListener("click", function () {
+                    const id = botao.getAttribute("data-modal-id");
+                    document.getElementById(id).classList.remove("hidden");
+                });
+            });
+
+            botoesFechar.forEach(botao => {
+                botao.addEventListener("click", function () {
+                    const id = botao.getAttribute("data-modal-id");
+                    document.getElementById(id).classList.add("hidden");
+                });
+            });
+
+            // Fechar clicando fora do conteúdo
+            window.addEventListener("click", function (event) {
+                if (event.target.classList.contains("modal")) {
+                    event.target.classList.add("hidden");
+                }
+            });
+        });
+    </script>
 </body>
 </html>
-
