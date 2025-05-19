@@ -129,13 +129,13 @@ main {
 .conteudo-principal {
     background-color: #f7f7f7;
     border-radius: 10px;
-    height: 80vh; /* ou qualquer valor adequado */
-    overflow-y: auto; /* adiciona rolagem vertical se necessário */
+    height: 100%; 
+    overflow-y: auto; 
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: flex-start;
-    padding: 1rem; /* opcional para respiro interno */
+    padding: 1rem;
 }
 
 .titulo-curso {
@@ -143,6 +143,7 @@ main {
     margin: 40px;
     margin-bottom: 50px;
     font-weight: bold;
+    color: rgba(41, 98, 6, 0.8);
 }
 
 .cursos-container {
@@ -155,7 +156,7 @@ main {
 .curso-box {
     width: 200px;
     height: 300px;
-    background-color: #e3e3e3;
+    background-color: #F2EEDD;
     display: flex;
     flex-direction: column;
     justify-content: flex-end;
@@ -171,11 +172,12 @@ main {
     width: 100%;
     background-color: #ccc;
     border-radius: 5px;
+    color: rgba(41, 98, 6, 0.8);
 }
 
 .botao-saiba-mais {
     margin-top: 10px;
-    background-color: #d6d6d6;
+    background-color: #FFFFFF;
     border: none;
     padding: 8px 12px;
     border-radius: 5px;
@@ -187,7 +189,7 @@ main {
 }
 
 .botao-saiba-mais:hover {
-    background-color: #bcbcbc;
+    background-color: #F7F7F7;
 }
 
 .curso-imagem img {
@@ -200,7 +202,7 @@ main {
 .curso-nome {
     font-size: 16px;
     font-weight: 600;
-    color: var(--cor-cinza-escuro);
+    color: rgba(41, 98, 6, 0.8);
     text-align: center;
     margin: 3px;
     line-height: 1.4;
@@ -269,10 +271,10 @@ main {
 }
 
 .botao {
-    background-color: #eee;
+    background-color: #F7F7F7;
     border: none;
     color: #e3e3e3;
-    background-color: var(--cor-cinza-escuro);
+    background-color: #F7F7F7;
     padding: 0.5rem 1rem;
     border-radius: 20px;
     cursor: pointer;
@@ -280,12 +282,11 @@ main {
 }
 
 .botao:hover {
-    background-color: #3332;
-    color: #333333;
+    background-color: #E3E3E3;
 }
 
 .botao a {
-    background-color: #eee;
+    background-color: #E3E3E3;
     border: none;
     padding: 0.5rem 1rem;
     border-radius: 20px;

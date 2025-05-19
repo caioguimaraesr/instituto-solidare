@@ -43,13 +43,14 @@ body {
     "navbar navbar"
     "sidebar main"
     "sidebar footer";
-    color: var(--cor-cinza-escuro);
+    color: #F2EEDD;
+    background-color: #F2EEDD;
 }
 
 /****************** Sidebar ***********************/
 aside {
     grid-area: sidebar;
-    background-color: var(--cor-branco);
+    background-color: #F2EEDD;
     color: var(--cor-cinza-escuro);
     padding-top: 1rem;
     height: 100vh;
@@ -69,7 +70,7 @@ aside img {
     align-items: center;
     gap: 12px;
     padding: 1rem 1.5rem;
-    color: var(--cor-cinza-escuro);
+    color: #426445;
     text-decoration: none;
     transition: transform 0.3s ease;
     margin-top: 0.5rem;
@@ -85,7 +86,7 @@ aside img {
 }
 
 .sidebar-link:hover .sidebar-title {
-    color: var(--cor-azul-claro);
+    color: #557659;
 }
 
 /********************* Main ***********************/
@@ -94,7 +95,7 @@ main {
     padding: 2rem;
     overflow-y: auto;
     height: calc(100vh - 50.4px);
-    background-color: var(--cor-cinza-claro);
+    background-color: #F2EEDD;
 }
 
 /******************* Login Page **********************/
