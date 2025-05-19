@@ -8,95 +8,107 @@
     <title>Bloom | Portal do Professor</title>
     <link rel="stylesheet" href="{% static 'instsoli/css/style.css' %}">
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
-</head>
-<body>
     <style>
         .container {
-            width: 100%;
-            margin: auto;
-            background: white;
             padding: 30px;
-            border-radius: 10px;
-            box-shadow: 0 0 10px rgba(0,0,0,0.1);
-        }
-
-        .aviso-container {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 20px;
-        }
-
-        .aviso {
-            flex: 1 1 calc(50% - 20px);
-            border-left: 6px solid #6a1b9a;
-            background: #f9f9f9;
-            padding: 15px 20px;
-            border-radius: 6px;
-            box-sizing: border-box;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+            background-color: #FFFFFF;
         }
 
         h1 {
             text-align: center;
+            font-size: 2em;
+            margin-bottom: 30px;
+            color: #355e3b;
+        }
+
+        .aviso-lista {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .aviso-item {
+            display: flex;
+            flex-direction: column;
+            background: #f9f9f9;
+            padding: 20px;
+            border-radius: 10px;
+            border: 1px solid #e0e0e0;
+            transition: background 0.3s;
+        }
+
+        .aviso-item:hover {
+            background: #f3f3f3;
+        }
+
+        .aviso-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-weight: bold;
+            margin-bottom: 8px;
             color: #333;
         }
 
-        .aviso h2 {
-            margin: 0 0 10px 0;
-            color: #333;
-        }
-
-        .aviso p {
-            margin: 5px 0;
+        .aviso-body {
             color: #555;
-            max-height: 150px;
-            overflow: auto;
-        }
-
-        .data {
-            font-size: 0.9em;
-            color: #888;
-            text-align: right;
-        }
-
-        .mensagem {
-            max-height: 150px;
+            font-size: 0.95em;
+            max-height: 100px;
             overflow-y: auto;
-            color: #555;
-            margin: 5px 0;
         }
-        .mensagem::-webkit-scrollbar {
+
+        .aviso-footer {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.85em;
+            color: #888;
+            margin-top: 10px;
+        }
+
+        .aviso-body::-webkit-scrollbar {
             width: 6px;
         }
-        .mensagem::-webkit-scrollbar-thumb {
+
+        .aviso-body::-webkit-scrollbar-thumb {
             background-color: #ccc;
             border-radius: 3px;
         }
     </style>
+</head>
+<body>
+
     {% include "instsoli/partials/sidebar.html" %}
 
     <main>
         <div class="container">
-            <h1 style="margin-bottom: 10px">Avisos do Professor</h1>
+            <h1>Avisos</h1>
 
             {% if avisos %}
-                <div class="aviso-container">
+                <div class="aviso-lista">
                     {% for aviso in avisos %}
-                        <div class="aviso">
-                            <h2>{{ aviso.titulo }}</h2>
-                            <p class="mensagem"><strong>Mensagem:</strong> {{ aviso.mensagem }}</p>
-                            <p><strong>Prioridade:</strong> {{ aviso.prioridade }}</p>
-                            <p><strong>Responsável:</strong> {{ aviso.professor }}</p>
-                            <p class="data">{{ aviso.data_criacao|date:"d/m/Y H:i" }}</p>
+                        <div class="aviso-item">
+                            <div class="aviso-header">
+                                <span>{{ aviso.titulo }}</span>
+                                <span>{{ aviso.data_criacao|date:"H:i d/m/Y" }}</span>
+                            </div>
+                            <div class="aviso-body">
+                                <p><strong>Mensagem:</strong> {{ aviso.mensagem }}</p>
+                            </div>
+                            <div class="aviso-footer">
+                                <span><strong>Prioridade:</strong> {{ aviso.prioridade|upper }}</span>
+                                <span><strong>Responsável:</strong> {{ aviso.professor }}</span>
+                            </div>
                         </div>
                     {% endfor %}
                 </div>
             {% else %}
-                <p>Nenhum aviso disponível no momento.</p>
+                <p style="text-align: center;">Nenhum aviso disponível no momento.</p>
             {% endif %}
-        </div>  
+        </div>
     </main>
 
     <script src="{% static 'instsoli/js/scripts.js' %}"></script>
 </body>
 </html>
-
